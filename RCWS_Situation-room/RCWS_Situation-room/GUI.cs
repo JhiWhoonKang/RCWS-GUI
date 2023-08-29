@@ -129,51 +129,41 @@
         //{
         //    if (e.Button == MouseButtons.Left)
         //    {
-        //        // 클릭한 위치의 좌표를 화면 좌표에서 이미지 좌표로 변환
         //        int imageX = (int)(e.X / currentScale);
         //        int imageY = (int)(e.Y / currentScale);
 
-        //        // RCWS 위치로 표시
         //        DrawRCWSLocation(imageX, imageY);
 
-        //        // RCWS가 해당 위치를 바라보는 방향을 나타내는 막대 직선 그리기
         //        DrawDirection(imageX, imageY);
         //    }
         //}
 
         //private void DrawRCWSLocation(int x, int y)
         //{
-        //    // RCWS 위치를 표시할 그래픽스 객체 생성
         //    using (Graphics g = Graphics.FromImage(pictureBox_Map.Image))
         //    {
-        //        // 원을 그려서 RCWS 위치를 나타냅니다.
-        //        int rcwsRadius = 10; // 원의 반지름
-        //        Pen pen = new Pen(Color.Red, 2); // 원의 색상과 선 두께 설정
+        //        int rcwsRadius = 10;
+        //        Pen pen = new Pen(Color.Red, 2);
         //        g.DrawEllipse(pen, x - rcwsRadius, y - rcwsRadius, rcwsRadius * 2, rcwsRadius * 2);
         //    }
 
-        //    // 지도 이미지 업데이트
         //    pictureBox_Map.Invalidate();
         //}
 
         //private void DrawDirection(int rcwsX, int rcwsY)
         //{
-        //    // RCWS 위치에서 클릭한 위치까지의 선을 그리는 그래픽스 객체 생성
         //    using (Graphics g = Graphics.FromImage(pictureBox_Map.Image))
         //    {
-        //        Pen pen = new Pen(Color.Blue, 2); // 선의 색상과 선 두께 설정
+        //        Pen pen = new Pen(Color.Blue, 2);
 
-        //        // RCWS 위치에서 클릭한 위치까지 선 그리기
         //        g.DrawLine(pen, rcwsX, rcwsY, lastX, lastY);
         //    }
 
-        //    // 지도 이미지 업데이트
         //    pictureBox_Map.Invalidate();
         //}
 
         //private void pictureBox_Map_Paint(object sender, PaintEventArgs e)
         //{
-        //    // PictureBox의 Paint 이벤트 핸들러에서 지도 이미지를 다시 그립니다.
         //    e.Graphics.DrawImage(pictureBox_Map.Image, pictureBox_Map.Location);
         //}
 
