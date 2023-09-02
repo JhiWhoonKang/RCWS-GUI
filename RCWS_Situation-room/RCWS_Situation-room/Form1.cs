@@ -29,33 +29,33 @@ namespace RCWS_Situation_room
 
         private void btn_login_Click(object sender, EventArgs e)
         {
-            if (tb_username.Text == "아빠안잔다" && tb_password.Text == "hanium")
-            {
-                MessageBox.Show("Successfully Login");
-                this.Visible = false;
-                GUI gui = new GUI();
-                gui.Show();
-            }
+            //if (tb_username.Text == "아빠안잔다" && tb_password.Text == "hanium")
+            //{
+            //    MessageBox.Show("Successfully Login");
+            //    this.Visible = false;
+            //    GUI gui = new GUI();
+            //    gui.Show();
+            //}
 
-            else if (tb_username.Text == "")
-            {
-                MessageBox.Show("Invalid User Name");
-                tb_username.Focus();
-                return;
-            }
+            //else if (tb_username.Text == "")
+            //{
+            //    MessageBox.Show("Invalid User Name");
+            //    tb_username.Focus();
+            //    return;
+            //}
 
-            else if (tb_password.Text == "")
-            {
-                MessageBox.Show("Invalid Password");
-                tb_password.Focus();
-                return;
-            }
+            //else if (tb_password.Text == "")
+            //{
+            //    MessageBox.Show("Invalid Password");
+            //    tb_password.Focus();
+            //    return;
+            //}
 
-            else
-                MessageBox.Show("Invalid User Name or Password");
-            //this.Visible = false;
-            //GUI gui = new GUI();
-            //gui.Show();
+            //else
+            //    MessageBox.Show("Invalid User Name or Password");
+            this.Visible = false;
+            GUI gui = new GUI();
+            gui.Show();
         }
 
         private void tb_username_KeyDown(object sender, KeyEventArgs e)

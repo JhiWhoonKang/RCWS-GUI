@@ -190,14 +190,15 @@
             if (_pressedKeys.Contains(Keys.D))
                 command.Pan = -1;
             if (_pressedKeys.Contains(Keys.W))
-                command.Tilt = (char)3;
+                command.Tilt = 1;
             if (_pressedKeys.Contains(Keys.S))
-                command.Tilt = (char)4;
+                command.Tilt = -1;
             if (_pressedKeys.Contains(Keys.C))
             {
                 command.Permission = 1;
                 //ControlledByOperator = !ControlledByOperator;
             }
+
             byte[] commandBytes = TcpReturn.StructToBytes(command);
             await _streamWriter.BaseStream.WriteAsync(commandBytes, 0, commandBytes.Length);
             await _streamWriter.BaseStream.FlushAsync();
@@ -287,30 +288,47 @@
         double currentRCWSDirection;
         private void pictureBox_VIEW_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+            Pen BlackPen = new Pen(Color.Black, 2);
+            Pen RedPen = new Pen(Color.Red, 2);
+            Pen BluePen=new Pen(Color.Blue, 2);
+
             double angleInRadians = Math.PI * (currentRCWSDirection / 180.0);
 
             int centerX = pictureBox_VIEW.Width / 2;
             int centerY = pictureBox_VIEW.Height / 2;
             int radius = Math.Min(centerX, centerY);
 
-            int lineX = centerX + (int)(radius * Math.Cos(angleInRadians));
-            int lineY = centerY - (int)(radius * Math.Sin(angleInRadians));
+            double opticalAngle = Math.PI * (receivedStruct.OpticalPan/ 180.0);
+            double bodyAngle = Math.PI * (receivedStruct.BodyPan / 180.0);
 
-            using (Pen pen = new Pen(Color.Black, 2))
+            int opticalX = centerX + (int)(radius * Math.Cos(opticalAngle));
+            int opticalY = centerY - (int)(radius * Math.Sin(opticalAngle));
+
+            int bodyX = centerX + (int)(radius * Math.Cos(bodyAngle));
+            int bodyY = centerY - (int)(radius * Math.Sin(bodyAngle));
+
+            using (BlackPen)
             {
-                e.Graphics.DrawLine(pen, centerX, centerY, lineX, lineY);
+                g.DrawEllipse(BlackPen, 0, 0, pictureBox_VIEW.Width, pictureBox_VIEW.Height);
             }
 
-            using (Pen redPen = new Pen(Color.Red, 2))
+            /* Optical Pan */
+            using (RedPen)
             {
-                e.Graphics.DrawLine(redPen, centerX, centerY, lineX, lineY);
+                e.Graphics.DrawLine(RedPen, centerX, centerY, opticalX, opticalY);
+            }
+
+            /* Body Pan */
+            using (BluePen)
+            {   
+                e.Graphics.DrawLine(BluePen, centerX, centerY, bodyX, bodyY);
             }
         }
 
         private double CalculateRCWSDirection(double bodyPan, double bodyTilt)
         {
-
-            double directionInRadians = 0/*방위각, 고각 계산 여기*/ ;
+            double directionInRadians = 0/*방위각, 고각 계산 여기 예정*/ ;
             return directionInRadians;
         }
 

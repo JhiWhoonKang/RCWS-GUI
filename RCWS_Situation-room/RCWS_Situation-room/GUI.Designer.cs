@@ -47,6 +47,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tb_optical_elevation = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
+            this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_VIEW)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -55,9 +56,9 @@
             // pictureBox_Map
             // 
             this.pictureBox_Map.Image = global::RCWS_Situation_room.Properties.Resources.demomap;
-            this.pictureBox_Map.Location = new System.Drawing.Point(1101, 50);
+            this.pictureBox_Map.Location = new System.Drawing.Point(3, 7);
             this.pictureBox_Map.Name = "pictureBox_Map";
-            this.pictureBox_Map.Size = new System.Drawing.Size(444, 713);
+            this.pictureBox_Map.Size = new System.Drawing.Size(445, 710);
             this.pictureBox_Map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox_Map.TabIndex = 0;
             this.pictureBox_Map.TabStop = false;
@@ -77,24 +78,25 @@
             // 
             // pn_mapcontainer
             // 
-            this.pn_mapcontainer.Location = new System.Drawing.Point(1094, 50);
+            this.pn_mapcontainer.Controls.Add(this.pictureBox_Map);
+            this.pn_mapcontainer.Location = new System.Drawing.Point(1094, 46);
             this.pn_mapcontainer.Name = "pn_mapcontainer";
-            this.pn_mapcontainer.Size = new System.Drawing.Size(451, 719);
+            this.pn_mapcontainer.Size = new System.Drawing.Size(451, 723);
             this.pn_mapcontainer.TabIndex = 2;
             // 
             // rtb_sendtcp
             // 
-            this.rtb_sendtcp.Location = new System.Drawing.Point(13, 587);
+            this.rtb_sendtcp.Location = new System.Drawing.Point(13, 593);
             this.rtb_sendtcp.Name = "rtb_sendtcp";
-            this.rtb_sendtcp.Size = new System.Drawing.Size(237, 176);
+            this.rtb_sendtcp.Size = new System.Drawing.Size(205, 170);
             this.rtb_sendtcp.TabIndex = 3;
             this.rtb_sendtcp.Text = "";
             // 
             // rtb_receivetcp
             // 
-            this.rtb_receivetcp.Location = new System.Drawing.Point(256, 587);
+            this.rtb_receivetcp.Location = new System.Drawing.Point(228, 593);
             this.rtb_receivetcp.Name = "rtb_receivetcp";
-            this.rtb_receivetcp.Size = new System.Drawing.Size(237, 176);
+            this.rtb_receivetcp.Size = new System.Drawing.Size(205, 170);
             this.rtb_receivetcp.TabIndex = 4;
             this.rtb_receivetcp.Text = "";
             // 
@@ -110,9 +112,9 @@
             // 
             // pictureBox_VIEW
             // 
-            this.pictureBox_VIEW.Location = new System.Drawing.Point(636, 50);
+            this.pictureBox_VIEW.Location = new System.Drawing.Point(13, 167);
             this.pictureBox_VIEW.Name = "pictureBox_VIEW";
-            this.pictureBox_VIEW.Size = new System.Drawing.Size(452, 501);
+            this.pictureBox_VIEW.Size = new System.Drawing.Size(420, 420);
             this.pictureBox_VIEW.TabIndex = 6;
             this.pictureBox_VIEW.TabStop = false;
             this.pictureBox_VIEW.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_VIEW_Paint);
@@ -157,7 +159,7 @@
             this.groupBox1.Controls.Add(this.tb_body_elevation);
             this.groupBox1.Location = new System.Drawing.Point(13, 92);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(211, 69);
+            this.groupBox1.Size = new System.Drawing.Size(205, 70);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RCWS Body";
@@ -168,9 +170,9 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.tb_optical_elevation);
-            this.groupBox2.Location = new System.Drawing.Point(230, 92);
+            this.groupBox2.Location = new System.Drawing.Point(228, 91);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(211, 69);
+            this.groupBox2.Size = new System.Drawing.Size(205, 70);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Optical Body";
@@ -213,7 +215,6 @@
             this.ClientSize = new System.Drawing.Size(1558, 782);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.pictureBox_Map);
             this.Controls.Add(this.pictureBox_VIEW);
             this.Controls.Add(this.Connect);
             this.Controls.Add(this.rtb_receivetcp);
@@ -226,6 +227,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MotionControl";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).EndInit();
+            this.pn_mapcontainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_VIEW)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
