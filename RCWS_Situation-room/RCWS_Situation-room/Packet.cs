@@ -10,8 +10,8 @@ namespace RCWS_Situation_room
     {
         public struct SendTCP
         {
-            public int Tilt;
-            public int Pan;
+            public int BodyTilt;
+            public int BodyPan;
             public byte Permission;
             public byte Fire;
             public byte TakeAim;

@@ -21,6 +21,8 @@ namespace RCWS_Situation_room
             InitializeComponent();
         }
 
+        StreamWriter streamWriter;
+
         private void btn_close_Click(object sender, EventArgs e)
         {
             Close();
@@ -54,7 +56,7 @@ namespace RCWS_Situation_room
             //else
             //    MessageBox.Show("Invalid User Name or Password");
             this.Visible = false;
-            GUI gui = new GUI();
+            GUI gui = new GUI(streamWriter);
             gui.Show();
         }
 
@@ -70,7 +72,7 @@ namespace RCWS_Situation_room
             {
                 MessageBox.Show("Successfully Login");
                 this.Visible = false;
-                GUI gui = new GUI();
+                GUI gui = new GUI(streamWriter);
                 gui.Show();
             }
         }

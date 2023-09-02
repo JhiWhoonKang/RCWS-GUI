@@ -222,10 +222,13 @@
             this.Controls.Add(this.btn_close);
             this.Controls.Add(this.pn_mapcontainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "GUI";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MotionControl";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GUI_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GUI_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).EndInit();
             this.pn_mapcontainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_VIEW)).EndInit();

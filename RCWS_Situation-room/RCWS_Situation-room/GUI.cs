@@ -16,6 +16,7 @@
     using System.Runtime.Remoting.Messaging;
     using System.Diagnostics;
     using System.Net.NetworkInformation;
+    using static RCWS_Situation_room.Packet;
 
     namespace RCWS_Situation_room
 {
@@ -26,18 +27,17 @@
         private Bitmap mapImage;
         private float currentScale = 1.0f;
         private float zoomFactor = 1.1f;
-        private bool isDragging = false;
+        private bool isDragging = false;    
         private int lastX;
         private int lastY;
 
         /*motion control*/
-        private StreamWriter _streamWriter;
-        private HashSet<Keys> _pressedKeys = new HashSet<Keys>();
-
-        StreamReader streamReader;
+        private HashSet<Keys> pressedKeys = new HashSet<Keys>();
+        
         StreamWriter streamWriter;
+        StreamReader streamReader;
 
-        public GUI()
+        public GUI(StreamWriter streamWriter)
         {
             InitializeComponent();
 
@@ -52,15 +52,14 @@
 
             // pictureBox_Map.Click += new MouseEventHandler(pictureBox_Map_Click);
 
-            this._streamWriter = streamWriter;
-            this.KeyDown += new KeyEventHandler(MotionControl_KeyDown);
-            this.KeyUp += new KeyEventHandler(MotionControl_KeyUp);
+            this.streamWriter = streamWriter;
 
-            //Thread _thread = new Thread(TcpConnect);
-            //_thread.IsBackground = true;
-            //_thread.Start();
+            KeyDown += new KeyEventHandler(GUI_KeyDown);
+            KeyUp += new KeyEventHandler(GUI_KeyUp);
+            this.Focus();
         }
 
+        #region Map
         private void UpdateMapImage()
         {
             int newWidth = (int)(mapImage.Width * currentScale);
@@ -125,93 +124,59 @@
                 isDragging = false;
             }
         }
-
-        //private void pictureBox_Map_Click(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        int imageX = (int)(e.X / currentScale);
-        //        int imageY = (int)(e.Y / currentScale);
-
-        //        DrawRCWSLocation(imageX, imageY);
-
-        //        DrawDirection(imageX, imageY);
-        //    }
-        //}
-
-        //private void DrawRCWSLocation(int x, int y)
-        //{
-        //    using (Graphics g = Graphics.FromImage(pictureBox_Map.Image))
-        //    {
-        //        int rcwsRadius = 10;
-        //        Pen pen = new Pen(Color.Red, 2);
-        //        g.DrawEllipse(pen, x - rcwsRadius, y - rcwsRadius, rcwsRadius * 2, rcwsRadius * 2);
-        //    }
-
-        //    pictureBox_Map.Invalidate();
-        //}
-
-        //private void DrawDirection(int rcwsX, int rcwsY)
-        //{
-        //    using (Graphics g = Graphics.FromImage(pictureBox_Map.Image))
-        //    {
-        //        Pen pen = new Pen(Color.Blue, 2);
-
-        //        g.DrawLine(pen, rcwsX, rcwsY, lastX, lastY);
-        //    }
-
-        //    pictureBox_Map.Invalidate();
-        //}
-
-        //private void pictureBox_Map_Paint(object sender, PaintEventArgs e)
-        //{
-        //    e.Graphics.DrawImage(pictureBox_Map.Image, pictureBox_Map.Location);
-        //}
+        #endregion
 
         #region motion control
-        private async void MotionControl_KeyDown(object sender, KeyEventArgs e)
+
+        private async void GUI_KeyDown(object sender, KeyEventArgs e)
         {
-            _pressedKeys.Add(e.KeyCode);
+            pressedKeys.Add(e.KeyCode);
             await SendCommandStructure();
         }
 
-        private async void MotionControl_KeyUp(object sender, KeyEventArgs e)
+        private async void GUI_KeyUp(object sender, KeyEventArgs e)
         {
-            _pressedKeys.Remove(e.KeyCode);
+            pressedKeys.Remove(e.KeyCode);
             await SendCommandStructure();
         }
 
         private bool ControlledByOperator = false;
-        Packet.SendTCP command = new Packet.SendTCP();
+        SendTCP command = new SendTCP();
         private async Task SendCommandStructure()
         {
-            if (_pressedKeys.Contains(Keys.A))
-                command.Pan = 1;
-            if (_pressedKeys.Contains(Keys.D))
-                command.Pan = -1;
-            if (_pressedKeys.Contains(Keys.W))
-                command.Tilt = 1;
-            if (_pressedKeys.Contains(Keys.S))
-                command.Tilt = -1;
-            if (_pressedKeys.Contains(Keys.C))
+            if (pressedKeys.Contains(Keys.A))
+                command.BodyPan = 1;
+
+            if (pressedKeys.Contains(Keys.D))
+                command.BodyPan = -1;
+
+            if (pressedKeys.Contains(Keys.W))
+                command.BodyTilt = 1;
+
+            if (pressedKeys.Contains(Keys.S))
+                command.BodyTilt = -1;
+
+            if (pressedKeys.Contains(Keys.C))
             {
                 command.Permission = 1;
                 //ControlledByOperator = !ControlledByOperator;
             }
 
+            SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}\n");
+
             byte[] commandBytes = TcpReturn.StructToBytes(command);
-            await _streamWriter.BaseStream.WriteAsync(commandBytes, 0, commandBytes.Length);
-            await _streamWriter.BaseStream.FlushAsync();
+            await streamWriter.BaseStream.WriteAsync(commandBytes, 0, commandBytes.Length);
+            await streamWriter.BaseStream.FlushAsync();
         }
 
-        Packet.ReceiveTCP receivedStruct;
+        ReceiveTCP receivedStruct;
         private void TcpConnect()
         {
             TcpClient tcpClient = new TcpClient();
 
             try
             {
-                writeTcpRichTextbox("Connecting...");
+                SendTcp("Connecting...");
                 tcpClient.Connect(define.SERVER_IP, define.TCPPORT);
 
                 NetworkStream networkStream = tcpClient.GetStream();
@@ -221,22 +186,22 @@
             }
             catch (Exception ex)
             {
-                writeTcpRichTextbox("Connect ERROR: " + ex.Message);
+                ReceiveTcp("Connect ERROR: " + ex.Message);
                 return;
             }
 
-            writeTcpRichTextbox("Server Connected");
+            ReceiveTcp("Server Connected");
 
             try
             {
                 while (true)
                 {
-                    byte[] receivedData = new byte[Marshal.SizeOf(typeof(Packet.ReceiveTCP))];
+                    byte[] receivedData = new byte[Marshal.SizeOf(typeof(ReceiveTCP))];
                     streamReader.BaseStream.Read(receivedData, 0, receivedData.Length);
 
-                    receivedStruct = TcpReturn.BytesToStruct<Packet.ReceiveTCP>(receivedData);
+                    receivedStruct = TcpReturn.BytesToStruct<ReceiveTCP>(receivedData);
 
-                    writeTcpRichTextbox($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
+                    ReceiveTcp($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
                         $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}");
 
                     /* textbox display */
@@ -251,39 +216,10 @@
 
             catch (Exception ex)
             {
-                writeTcpRichTextbox("Connect ERROR: " + ex.Message);
+                ReceiveTcp("Connect ERROR: " + ex.Message);
                 return;
             }
         }
-
-        //private void View(Packet.ReceiveTCP ReceivedData)
-        //{
-        //    double _Pan, _Tilt;
-        //    if (ControlledByOperator)
-        //    {
-        //        _Pan = command.Pan; _Tilt=command.Tilt;
-        //    }
-        //    else
-        //    {
-        //        _Pan = receivedStruct.BodyPan; _Tilt=receivedStruct.BodyTilt;
-        //    }
-
-        //    Bitmap bmp = new Bitmap(pictureBox_VIEW.Width, pictureBox_VIEW.Height);
-
-        //    using (Graphics g = Graphics.FromImage(bmp))
-        //    {
-        //        g.Clear(Color.White);
-
-        //        int x2 = (int)(pictureBox_VIEW.Width / 2 + Math.Cos(_Pan) * pictureBox_VIEW.Width / 2);
-        //        int y2 = (int)(pictureBox_VIEW.Height / 2 - Math.Sin(_Pan) * pictureBox_VIEW.Height / 2);
-
-        //        Pen p = new Pen(Color.Black);
-        //        g.DrawLine(p, pictureBox_VIEW.Width / 2, pictureBox_VIEW.Height / 2, x2, y2);
-        //    }
-
-        //    pictureBox_VIEW.Image?.Dispose();
-        //    pictureBox_VIEW.Image = bmp;
-        //}
 
         double currentRCWSDirection;
         private void pictureBox_VIEW_Paint(object sender, PaintEventArgs e)
@@ -349,10 +285,16 @@
             thread.Start();
         }
 
-        private void writeTcpRichTextbox(string str)
+        private void SendTcp(string str)
         {
             rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.AppendText(str + "\r\n"); });
             rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.ScrollToCaret(); });
+        }
+
+        private void ReceiveTcp(string str)
+        {
+            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.AppendText(str + "\r\n"); });
+            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.ScrollToCaret(); });
         }
         #endregion
 
