@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_close = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_login = new System.Windows.Forms.Button();
             this.tb_username = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tb_password = new System.Windows.Forms.TextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.btn_close = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
@@ -62,6 +62,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(780, 30);
             this.panel1.TabIndex = 0;
+            // 
+            // btn_close
+            // 
+            this.btn_close.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.btn_close.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_close.BackgroundImage")));
+            this.btn_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btn_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_close.Location = new System.Drawing.Point(750, 2);
+            this.btn_close.Name = "btn_close";
+            this.btn_close.Size = new System.Drawing.Size(27, 27);
+            this.btn_close.TabIndex = 0;
+            this.btn_close.UseVisualStyleBackColor = false;
+            this.btn_close.Click += new System.EventHandler(this.btn_close_Click);
             // 
             // label1
             // 
@@ -90,6 +103,7 @@
             this.tb_username.Name = "tb_username";
             this.tb_username.Size = new System.Drawing.Size(207, 21);
             this.tb_username.TabIndex = 2;
+            this.tb_username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_username_KeyDown);
             // 
             // label2
             // 
@@ -164,6 +178,7 @@
             this.tb_password.Name = "tb_password";
             this.tb_password.Size = new System.Drawing.Size(207, 21);
             this.tb_password.TabIndex = 5;
+            this.tb_password.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_password_KeyDown);
             // 
             // pictureBox3
             // 
@@ -172,19 +187,6 @@
             this.pictureBox3.Size = new System.Drawing.Size(307, 256);
             this.pictureBox3.TabIndex = 6;
             this.pictureBox3.TabStop = false;
-            // 
-            // btn_close
-            // 
-            this.btn_close.BackColor = System.Drawing.Color.DarkOliveGreen;
-            this.btn_close.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btn_close.BackgroundImage")));
-            this.btn_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btn_close.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_close.Location = new System.Drawing.Point(750, 2);
-            this.btn_close.Name = "btn_close";
-            this.btn_close.Size = new System.Drawing.Size(27, 27);
-            this.btn_close.TabIndex = 0;
-            this.btn_close.UseVisualStyleBackColor = false;
-            this.btn_close.Click += new System.EventHandler(this.btn_close_Click);
             // 
             // pictureBox4
             // 

@@ -21,6 +21,7 @@
 {
     public partial class GUI : Form
     {
+
         /*map*/
         private Bitmap mapImage;
         private float currentScale = 1.0f;
@@ -236,6 +237,14 @@
 
                     writeTcpRichTextbox($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
                         $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}");
+
+                    /* textbox display */
+                    tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
+                    tb_body_elevation.Text = receivedStruct.BodyTilt.ToString();
+
+                    tb_optical_azimuth.Text=receivedStruct.OpticalPan.ToString();
+                    tb_optical_elevation.Text=receivedStruct.OpticalTilt.ToString();
+                    /* */
                 }
             }
 
@@ -317,9 +326,9 @@
 
         private void Connect_Click(object sender, EventArgs e)
         {
-            Thread _thread = new Thread(TcpConnect);
-            _thread.IsBackground = true;
-            _thread.Start();
+            Thread thread = new Thread(TcpConnect);
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void writeTcpRichTextbox(string str)

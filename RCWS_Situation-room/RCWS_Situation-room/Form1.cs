@@ -57,5 +57,22 @@ namespace RCWS_Situation_room
             //GUI gui = new GUI();
             //gui.Show();
         }
+
+        private void tb_username_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                tb_password.Focus();
+        }
+
+        private void tb_password_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter && tb_username.Text=="아빠안잔다" && tb_password.Text == "hanium")
+            {
+                MessageBox.Show("Successfully Login");
+                this.Visible = false;
+                GUI gui = new GUI();
+                gui.Show();
+            }
+        }
     }
 }
