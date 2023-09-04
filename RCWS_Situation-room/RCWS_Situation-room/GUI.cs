@@ -1,25 +1,25 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Data;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Runtime.InteropServices;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-    using System.Runtime.Remoting.Messaging;
-    using System.Diagnostics;
-    using System.Net.NetworkInformation;
-    using static RCWS_Situation_room.Packet;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Runtime.Remoting.Messaging;
+using System.Diagnostics;
+using System.Net.NetworkInformation;
+using static RCWS_Situation_room.Packet;
 
-    namespace RCWS_Situation_room
-{
+namespace RCWS_Situation_room
+{ 
     public partial class GUI : Form
     {
         /*map*/
