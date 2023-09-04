@@ -46,11 +46,32 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tb_optical_elevation = new System.Windows.Forms.TextBox();
+            this.btn_Permission = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.tb_Distance = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tb_Pointdistance = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tb_Magnification = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tb_TakeAim = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.tb_Fire = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tb_RemainingBullets = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
             this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_VIEW)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox_Map
@@ -88,15 +109,15 @@
             // 
             this.rtb_sendtcp.Location = new System.Drawing.Point(13, 593);
             this.rtb_sendtcp.Name = "rtb_sendtcp";
-            this.rtb_sendtcp.Size = new System.Drawing.Size(205, 170);
+            this.rtb_sendtcp.Size = new System.Drawing.Size(420, 170);
             this.rtb_sendtcp.TabIndex = 3;
             this.rtb_sendtcp.Text = "";
             // 
             // rtb_receivetcp
             // 
-            this.rtb_receivetcp.Location = new System.Drawing.Point(228, 593);
+            this.rtb_receivetcp.Location = new System.Drawing.Point(439, 593);
             this.rtb_receivetcp.Name = "rtb_receivetcp";
-            this.rtb_receivetcp.Size = new System.Drawing.Size(205, 170);
+            this.rtb_receivetcp.Size = new System.Drawing.Size(454, 170);
             this.rtb_receivetcp.TabIndex = 4;
             this.rtb_receivetcp.Text = "";
             // 
@@ -209,10 +230,167 @@
             this.tb_optical_elevation.Size = new System.Drawing.Size(93, 21);
             this.tb_optical_elevation.TabIndex = 8;
             // 
+            // btn_Permission
+            // 
+            this.btn_Permission.Location = new System.Drawing.Point(6, 35);
+            this.btn_Permission.Name = "btn_Permission";
+            this.btn_Permission.Size = new System.Drawing.Size(442, 23);
+            this.btn_Permission.TabIndex = 13;
+            this.btn_Permission.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btn_Permission);
+            this.groupBox3.Location = new System.Drawing.Point(439, 92);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(454, 69);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Control Authority Status";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.groupBox4);
+            this.groupBox7.Controls.Add(this.groupBox8);
+            this.groupBox7.Location = new System.Drawing.Point(439, 167);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(454, 420);
+            this.groupBox7.TabIndex = 16;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "RCWS Status";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.tb_Magnification);
+            this.groupBox8.Controls.Add(this.label12);
+            this.groupBox8.Controls.Add(this.tb_Pointdistance);
+            this.groupBox8.Controls.Add(this.label6);
+            this.groupBox8.Controls.Add(this.tb_Distance);
+            this.groupBox8.Controls.Add(this.label5);
+            this.groupBox8.Location = new System.Drawing.Point(6, 45);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(442, 70);
+            this.groupBox8.TabIndex = 17;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Range Founder";
+            // 
+            // tb_Distance
+            // 
+            this.tb_Distance.Location = new System.Drawing.Point(117, 41);
+            this.tb_Distance.Name = "tb_Distance";
+            this.tb_Distance.Size = new System.Drawing.Size(105, 21);
+            this.tb_Distance.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(115, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 12);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Distance";
+            // 
+            // tb_Pointdistance
+            // 
+            this.tb_Pointdistance.Location = new System.Drawing.Point(228, 41);
+            this.tb_Pointdistance.Name = "tb_Pointdistance";
+            this.tb_Pointdistance.Size = new System.Drawing.Size(105, 21);
+            this.tb_Pointdistance.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(226, 26);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(86, 12);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "Point Distance";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 26);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(80, 12);
+            this.label12.TabIndex = 21;
+            this.label12.Text = "Magnification";
+            // 
+            // tb_Magnification
+            // 
+            this.tb_Magnification.Location = new System.Drawing.Point(6, 41);
+            this.tb_Magnification.Name = "tb_Magnification";
+            this.tb_Magnification.Size = new System.Drawing.Size(105, 21);
+            this.tb_Magnification.TabIndex = 22;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.tb_TakeAim);
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Controls.Add(this.tb_RemainingBullets);
+            this.groupBox4.Controls.Add(this.tb_Fire);
+            this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Location = new System.Drawing.Point(6, 121);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(442, 74);
+            this.groupBox4.TabIndex = 20;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Weapon";
+            // 
+            // tb_TakeAim
+            // 
+            this.tb_TakeAim.Location = new System.Drawing.Point(8, 43);
+            this.tb_TakeAim.Name = "tb_TakeAim";
+            this.tb_TakeAim.Size = new System.Drawing.Size(105, 21);
+            this.tb_TakeAim.TabIndex = 28;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 12);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "Take Aim";
+            // 
+            // tb_Fire
+            // 
+            this.tb_Fire.Location = new System.Drawing.Point(119, 43);
+            this.tb_Fire.Name = "tb_Fire";
+            this.tb_Fire.Size = new System.Drawing.Size(105, 21);
+            this.tb_Fire.TabIndex = 23;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(228, 28);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(107, 12);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "Remaining Bullets";
+            // 
+            // tb_RemainingBullets
+            // 
+            this.tb_RemainingBullets.Location = new System.Drawing.Point(230, 43);
+            this.tb_RemainingBullets.Name = "tb_RemainingBullets";
+            this.tb_RemainingBullets.Size = new System.Drawing.Size(105, 21);
+            this.tb_RemainingBullets.TabIndex = 24;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(117, 28);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(26, 12);
+            this.label13.TabIndex = 25;
+            this.label13.Text = "Fire";
+            // 
             // GUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1558, 782);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox_VIEW);
@@ -236,6 +414,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -259,5 +443,22 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tb_optical_elevation;
+        private System.Windows.Forms.Button btn_Permission;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.TextBox tb_Distance;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tb_Pointdistance;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tb_Magnification;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox tb_TakeAim;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox tb_Fire;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tb_RemainingBullets;
+        private System.Windows.Forms.Label label13;
     }
 }

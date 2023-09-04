@@ -22,7 +22,6 @@
 {
     public partial class GUI : Form
     {
-
         /*map*/
         private Bitmap mapImage;
         private float currentScale = 1.0f;
@@ -37,12 +36,22 @@
         StreamWriter streamWriter;
         StreamReader streamReader;
 
+        private NetworkStream networkStream;
+
+        SendTCP command;
+        ReceiveTCP receivedStruct;
+
+        double currentRCWSDirection;
+
         public GUI(StreamWriter streamWriter)
         {
             InitializeComponent();
 
             mapImage = new Bitmap(@"C:\JHIWHOON_ws\2023 Hanium\_file photo\demomap.bmp");
             UpdateMapImage();
+
+            command = new SendTCP();
+            receivedStruct = new ReceiveTCP();
 
             pictureBox_Map.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox_Map.MouseWheel += MapPictureBox_MouseWheel;
@@ -128,22 +137,48 @@
 
         #region motion control
 
+        private readonly SemaphoreSlim keySemaphore = new SemaphoreSlim(1, 1);
+
         private async void GUI_KeyDown(object sender, KeyEventArgs e)
         {
-            pressedKeys.Add(e.KeyCode);
-            await SendCommandStructure();
+            await keySemaphore.WaitAsync();
+
+            try
+            {
+                if (pressedKeys.Add(e.KeyCode))
+                {
+                    await SendCommandStructure();
+                }
+            }
+            finally
+            {
+                keySemaphore.Release();
+
+            }
         }
 
         private async void GUI_KeyUp(object sender, KeyEventArgs e)
         {
-            pressedKeys.Remove(e.KeyCode);
-            await SendCommandStructure();
+            await keySemaphore.WaitAsync();
+
+            try
+            {
+                if (pressedKeys.Remove(e.KeyCode))
+                {
+                    await SendCommandStructure();
+                }
+            }
+            finally
+            {
+                keySemaphore.Release();
+            }
         }
 
-        private bool ControlledByOperator = false;
-        SendTCP command = new SendTCP();
         private async Task SendCommandStructure()
         {
+            command.BodyPan = 0;
+            command.BodyTilt = 0;
+
             if (pressedKeys.Contains(Keys.A))
                 command.BodyPan = 1;
 
@@ -158,8 +193,10 @@
 
             if (pressedKeys.Contains(Keys.C))
             {
-                command.Permission = 1;
-                //ControlledByOperator = !ControlledByOperator;
+                if (command.Permission == 1)
+                    command.Permission = 2;
+                else
+                    command.Permission = 1;
             }
 
             SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}\n");
@@ -169,8 +206,7 @@
             await streamWriter.BaseStream.FlushAsync();
         }
 
-        ReceiveTCP receivedStruct;
-        private void TcpConnect()
+        private async Task TcpConnectAsync()
         {
             TcpClient tcpClient = new TcpClient();
 
@@ -179,7 +215,7 @@
                 SendTcp("Connecting...");
                 tcpClient.Connect(define.SERVER_IP, define.TCPPORT);
 
-                NetworkStream networkStream = tcpClient.GetStream();
+                networkStream = tcpClient.GetStream();
                 streamReader = new StreamReader(networkStream);
                 streamWriter = new StreamWriter(networkStream);
                 streamWriter.AutoFlush = true;
@@ -197,12 +233,14 @@
                 while (true)
                 {
                     byte[] receivedData = new byte[Marshal.SizeOf(typeof(ReceiveTCP))];
-                    streamReader.BaseStream.Read(receivedData, 0, receivedData.Length);
+                    await networkStream.ReadAsync(receivedData, 0, receivedData.Length);
 
                     receivedStruct = TcpReturn.BytesToStruct<ReceiveTCP>(receivedData);
 
                     ReceiveTcp($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
-                        $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}");
+                        $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}" +
+                        $", distance{receivedStruct.distance}, TakeAim: {receivedStruct.TakeAim}, Remaining_bullets: {receivedStruct.Remaining_bullets}" +
+                        $", Magnification{receivedStruct.Magnification}, Fire: {receivedStruct.Fire}");
 
                     /* textbox display */
                     tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
@@ -210,6 +248,35 @@
 
                     tb_optical_azimuth.Text=receivedStruct.OpticalPan.ToString();
                     tb_optical_elevation.Text=receivedStruct.OpticalTilt.ToString();
+
+                    tb_Pointdistance.Text=receivedStruct.pointdistance.ToString();
+                    tb_Distance.Text=receivedStruct.distance.ToString();
+
+                    tb_TakeAim.Text=receivedStruct.TakeAim.ToString();
+                    tb_RemainingBullets.Text=receivedStruct.Remaining_bullets.ToString();
+                    
+                    tb_Magnification.Text=receivedStruct.Magnification.ToString();
+                    tb_Fire.Text=receivedStruct.Fire.ToString();
+                    /* */
+
+                    /* button display */
+                    if (receivedStruct.Permission == 0 || receivedStruct.Permission == 2)
+                    {
+                        btn_Permission.BackColor = Color.Green;
+                        btn_Permission.Text = "Controlable";
+                    }
+
+                    else if (receivedStruct.Permission == 1)
+                    {
+                        btn_Permission.BackColor = Color.Red;
+                        btn_Permission.Text = "Uncontrolable";
+                    }
+
+                    else
+                    {
+                        btn_Permission.BackColor = Color.Empty;
+                        btn_Permission.Text = "No data. RETRY";
+                    }
                     /* */
                 }
             }
@@ -221,7 +288,6 @@
             }
         }
 
-        double currentRCWSDirection;
         private void pictureBox_VIEW_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -278,11 +344,9 @@
             pictureBox_VIEW.Invalidate();
         }
 
-        private void Connect_Click(object sender, EventArgs e)
+        private async void Connect_Click(object sender, EventArgs e)
         {
-            Thread thread = new Thread(TcpConnect);
-            thread.IsBackground = true;
-            thread.Start();
+            await Task.Run(() => TcpConnectAsync());
         }
 
         private void SendTcp(string str)
