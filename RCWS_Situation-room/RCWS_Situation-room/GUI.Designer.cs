@@ -427,38 +427,45 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox_Map;
+
         private System.Windows.Forms.Button btn_close;
+        private System.Windows.Forms.Button Connect;
+        private System.Windows.Forms.Button btn_Permission;
+
         private System.Windows.Forms.Panel pn_mapcontainer;
+
         private System.Windows.Forms.RichTextBox rtb_sendtcp;
         private System.Windows.Forms.RichTextBox rtb_receivetcp;
-        private System.Windows.Forms.Button Connect;
+
         private System.Windows.Forms.PictureBox pictureBox_VIEW;
+        
         private System.Windows.Forms.TextBox tb_body_azimuth;
         private System.Windows.Forms.TextBox tb_body_elevation;
+        private System.Windows.Forms.TextBox tb_optical_azimuth;
+        private System.Windows.Forms.TextBox tb_optical_elevation;
+        private System.Windows.Forms.TextBox tb_Distance;
+        private System.Windows.Forms.TextBox tb_Pointdistance;
+        private System.Windows.Forms.TextBox tb_Magnification;
+        private System.Windows.Forms.TextBox tb_TakeAim;
+        private System.Windows.Forms.TextBox tb_Fire;
+        private System.Windows.Forms.TextBox tb_RemainingBullets;
+
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox tb_optical_azimuth;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tb_optical_elevation;
-        private System.Windows.Forms.Button btn_Permission;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.TextBox tb_Distance;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tb_Pointdistance;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox tb_Magnification;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TextBox tb_TakeAim;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tb_Fire;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox tb_RemainingBullets;
-        private System.Windows.Forms.Label label13;
     }
 }

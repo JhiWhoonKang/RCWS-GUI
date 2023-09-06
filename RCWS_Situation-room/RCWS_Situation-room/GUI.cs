@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -16,7 +17,6 @@ using System.Windows.Forms;
 using System.Runtime.Remoting.Messaging;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
-using static RCWS_Situation_room.Packet;
 
 namespace RCWS_Situation_room
 { 
@@ -36,10 +36,14 @@ namespace RCWS_Situation_room
         StreamWriter streamWriter;
         StreamReader streamReader;
 
+        /* SG90 */
+        private SerialPort sg90Port;
+        private int scope = 0;
+
         private NetworkStream networkStream;
 
-        SendTCP command;
-        ReceiveTCP receivedStruct;
+        Packet.SendTCP command;
+        Packet.ReceiveTCP receivedStruct;
 
         double currentRCWSDirection;
 
@@ -50,8 +54,18 @@ namespace RCWS_Situation_room
             mapImage = new Bitmap(@"C:\JHIWHOON_ws\2023 Hanium\_file photo\demomap.bmp");
             UpdateMapImage();
 
-            command = new SendTCP();
-            receivedStruct = new ReceiveTCP();
+            command = new Packet.SendTCP();
+            receivedStruct = new Packet.ReceiveTCP();
+
+            sg90Port = new SerialPort("COM6",9600);
+            try
+            {
+                sg90Port.Open();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Cannot open SG90 Serial Port" + ex.Message);
+            }
 
             pictureBox_Map.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox_Map.MouseWheel += MapPictureBox_MouseWheel;
@@ -136,9 +150,7 @@ namespace RCWS_Situation_room
         #endregion
 
         #region motion control
-
         private readonly SemaphoreSlim keySemaphore = new SemaphoreSlim(1, 1);
-
         private async void GUI_KeyDown(object sender, KeyEventArgs e)
         {
             await keySemaphore.WaitAsync();
@@ -147,13 +159,13 @@ namespace RCWS_Situation_room
             {
                 if (pressedKeys.Add(e.KeyCode))
                 {
+                    Sendsg90Scope();
                     await SendCommandStructure();
                 }
             }
             finally
             {
                 keySemaphore.Release();
-
             }
         }
 
@@ -199,6 +211,19 @@ namespace RCWS_Situation_room
                     command.Permission = 1;
             }
 
+            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I))
+            {
+                int angle = 30;
+                try
+                {
+                    sg90Port.WriteLine(angle.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot send SG90 scope data" + ex.Message);
+                }
+            }
+
             SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}\n");
 
             byte[] commandBytes = TcpReturn.StructToBytes(command);
@@ -206,6 +231,27 @@ namespace RCWS_Situation_room
             await streamWriter.BaseStream.FlushAsync();
         }
 
+        private void Sendsg90Scope()
+        {
+            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I))
+            {
+                int angle = (scope == 0) ? define.MAX_ANGLE : define.MIN_ANGLE;
+                try
+                {
+                    sg90Port.WriteLine(angle.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot send SG90 scope data" + ex.Message);
+                }
+
+                scope = (scope == 0) ? 1 : 0;
+            }
+        }
+
+        #endregion
+
+        #region TCP Connect
         private async Task TcpConnectAsync()
         {
             TcpClient tcpClient = new TcpClient();
@@ -232,10 +278,10 @@ namespace RCWS_Situation_room
             {
                 while (true)
                 {
-                    byte[] receivedData = new byte[Marshal.SizeOf(typeof(ReceiveTCP))];
+                    byte[] receivedData = new byte[Marshal.SizeOf(typeof(Packet.ReceiveTCP))];
                     await networkStream.ReadAsync(receivedData, 0, receivedData.Length);
 
-                    receivedStruct = TcpReturn.BytesToStruct<ReceiveTCP>(receivedData);
+                    receivedStruct = TcpReturn.BytesToStruct<Packet.ReceiveTCP>(receivedData);
 
                     ReceiveTcp($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
                         $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}" +
@@ -288,6 +334,25 @@ namespace RCWS_Situation_room
             }
         }
 
+        private async void Connect_Click(object sender, EventArgs e)
+        {
+            await Task.Run(() => TcpConnectAsync());
+        }
+
+        private void SendTcp(string str)
+        {
+            rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.AppendText(str + "\r\n"); });
+            rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.ScrollToCaret(); });
+        }
+
+        private void ReceiveTcp(string str)
+        {
+            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.AppendText(str + "\r\n"); });
+            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.ScrollToCaret(); });
+        }
+        #endregion
+
+        #region AZEL GUI
         private void pictureBox_VIEW_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -343,29 +408,16 @@ namespace RCWS_Situation_room
 
             pictureBox_VIEW.Invalidate();
         }
-
-        private async void Connect_Click(object sender, EventArgs e)
-        {
-            await Task.Run(() => TcpConnectAsync());
-        }
-
-        private void SendTcp(string str)
-        {
-            rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.AppendText(str + "\r\n"); });
-            rtb_sendtcp.Invoke((MethodInvoker)delegate { rtb_sendtcp.ScrollToCaret(); });
-        }
-
-        private void ReceiveTcp(string str)
-        {
-            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.AppendText(str + "\r\n"); });
-            rtb_receivetcp.Invoke((MethodInvoker)delegate { rtb_receivetcp.ScrollToCaret(); });
-        }
         #endregion
 
         private void btn_close_Click(object sender, EventArgs e)
         {
             Close();
             Application.Exit();
+            if (sg90Port.IsOpen)
+            {
+                sg90Port.Close();
+            }
         }
     }
 }
