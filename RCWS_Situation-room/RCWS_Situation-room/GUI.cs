@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using System.Runtime.Remoting.Messaging;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
+using System.Windows.Forms.Design;
 
 namespace RCWS_Situation_room
 { 
@@ -47,6 +48,8 @@ namespace RCWS_Situation_room
 
         double currentRCWSDirection;
 
+        Process RCWSCam;
+
         public GUI(StreamWriter streamWriter)
         {
             InitializeComponent();
@@ -72,8 +75,6 @@ namespace RCWS_Situation_room
             pictureBox_Map.MouseDown += MapPictureBox_MouseDown;
             pictureBox_Map.MouseMove += MapPictureBox_MouseMove;
             pictureBox_Map.MouseUp += MapPictureBox_MouseUp;
-
-            // pictureBox_Map.Click += new MouseEventHandler(pictureBox_Map_Click);
 
             this.streamWriter = streamWriter;
 
@@ -334,9 +335,12 @@ namespace RCWS_Situation_room
             }
         }
 
-        private async void Connect_Click(object sender, EventArgs e)
+        private async void btn_connect_Click(object sender, EventArgs e)
         {
             await Task.Run(() => TcpConnectAsync());
+            RCWSCam = new Process();
+            RCWSCam.StartInfo.FileName = "C:\\JHIWHOON_ws\\2023 Hanium\\My_Server\\obj\\Debug\\My_Server.exe";
+            RCWSCam.Start();
         }
 
         private void SendTcp(string str)
@@ -353,60 +357,64 @@ namespace RCWS_Situation_room
         #endregion
 
         #region AZEL GUI
-        private void pictureBox_VIEW_Paint(object sender, PaintEventArgs e)
+        private void pictureBox_azimuth_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Pen BlackPen = new Pen(Color.Black, 2);
-            Pen RedPen = new Pen(Color.Red, 2);
-            Pen BluePen=new Pen(Color.Blue, 2);
+            var g = e.Graphics;
 
-            double angleInRadians = Math.PI * (currentRCWSDirection / 180.0);
+            int centerX = pictureBox_azimuth.Width / 2;
+            int centerY = pictureBox_azimuth.Height / 2;
 
-            int centerX = pictureBox_VIEW.Width / 2;
-            int centerY = pictureBox_VIEW.Height / 2;
-            int radius = Math.Min(centerX, centerY);
+            g.DrawEllipse(Pens.Black, 0, 0, pictureBox_azimuth.Width - 1, pictureBox_azimuth.Height - 1);
 
-            double opticalAngle = Math.PI * (receivedStruct.OpticalPan/ 180.0);
-            double bodyAngle = Math.PI * (receivedStruct.BodyPan / 180.0);
+            int lineLength = centerX;
 
-            int opticalX = centerX + (int)(radius * Math.Cos(opticalAngle));
-            int opticalY = centerY - (int)(radius * Math.Sin(opticalAngle));
+            double radianAngleRCWS = receivedStruct.BodyPan * Math.PI / 180.0;
 
-            int bodyX = centerX + (int)(radius * Math.Cos(bodyAngle));
-            int bodyY = centerY - (int)(radius * Math.Sin(bodyAngle));
+            int endXRCWS = centerX + (int)(lineLength * Math.Sin(radianAngleRCWS));
+            int endYRCWS = centerY - (int)(lineLength * Math.Cos(radianAngleRCWS));
 
-            using (BlackPen)
-            {
-                g.DrawEllipse(BlackPen, 0, 0, pictureBox_VIEW.Width, pictureBox_VIEW.Height);
-            }
+            g.DrawLine(Pens.Red, new Point(centerX, centerY), new Point(endXRCWS, endYRCWS));
 
-            /* Optical Pan */
-            using (RedPen)
-            {
-                e.Graphics.DrawLine(RedPen, centerX, centerY, opticalX, opticalY);
-            }
+            double radianAngleOptical = receivedStruct.OpticalPan * Math.PI / 180.0;
 
-            /* Body Pan */
-            using (BluePen)
-            {   
-                e.Graphics.DrawLine(BluePen, centerX, centerY, bodyX, bodyY);
-            }
+            int endXOptical = centerX + (int)(lineLength * Math.Sin(radianAngleOptical));
+            int endYOptical = centerY - (int)(lineLength * Math.Cos(radianAngleOptical));
+
+            g.DrawLine(Pens.Blue, new Point(centerX, centerY), new Point(endXOptical, endYOptical));
         }
 
-        private double CalculateRCWSDirection(double bodyPan, double bodyTilt)
+        private void pictureBox_elevation_Paint(object sender, PaintEventArgs e)
         {
-            double directionInRadians = 0/*방위각, 고각 계산 여기 예정*/ ;
-            return directionInRadians;
-        }
+            var g = e.Graphics;
 
-        private void UpdateRCWSDirection()
-        {
-            double bodyPan = receivedStruct.BodyPan;
-            double bodyTilt = receivedStruct.BodyTilt;
+            int startX = 0;
+            int startY = pictureBox_elevation.Height / 2;
 
-            currentRCWSDirection = CalculateRCWSDirection(bodyPan, bodyTilt);
+            int lineLength = pictureBox_elevation.Width;
 
-            pictureBox_VIEW.Invalidate();
+            double radianAngleRCWS = receivedStruct.BodyTilt * Math.PI / 180.0;
+
+            string text = "RCWS 고각: " + receivedStruct.BodyTilt.ToString() + ", Optical 고각: " + receivedStruct.OpticalTilt.ToString();
+
+            float x = 10;
+            float y = 10;
+
+            using (Font font = new Font("Arial", 12))
+            {
+                g.DrawString(text, font, Brushes.Black, x, y);
+            }
+
+            int endXRCWS = startX + (int)(lineLength * Math.Cos(radianAngleRCWS));
+            int endYRCWS = startY - (int)(lineLength * Math.Sin(radianAngleRCWS));
+
+            g.DrawLine(Pens.Red, new Point(startX, startY), new Point(endXRCWS, endYRCWS));
+
+            double radianAngleOptical = receivedStruct.OpticalTilt * Math.PI / 180.0;
+
+            int endXOptical = startX + (int)(lineLength * Math.Cos(radianAngleOptical));
+            int endYOptical = startY - (int)(lineLength * Math.Sin(radianAngleOptical));
+
+            g.DrawLine(Pens.Blue, new Point(startX, startY), new Point(endXOptical, endYOptical));
         }
         #endregion
 
@@ -418,6 +426,18 @@ namespace RCWS_Situation_room
             {
                 sg90Port.Close();
             }
+            RCWSCam.Kill();
+        }
+
+        private void btn_disconnect_Click(object sender, EventArgs e)
+        {
+            Close();
+            Application.Exit();
+            if (sg90Port.IsOpen)
+            {
+                sg90Port.Close();
+            }
+            RCWSCam.Kill();
         }
     }
 }
