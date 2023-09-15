@@ -1,2 +1,4 @@
 # RCWS-GUI
-RCWS-GUI using C# Windows Forms
+
+<br/>Tool: Visual Studio Windows Forms app(.NET Framework)
+<br/>Language: C, C#
