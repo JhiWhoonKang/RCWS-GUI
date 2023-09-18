@@ -287,23 +287,24 @@ namespace RCWS_Situation_room
                     ReceiveTcp($"OpticalTilt: {receivedStruct.OpticalTilt}, OpticalPan: {receivedStruct.OpticalPan}, BodyTilt: {receivedStruct.BodyTilt}" +
                         $", BodyPan: {receivedStruct.BodyPan}, pointdistance: {receivedStruct.Permission}, Permission: {receivedStruct.Permission}" +
                         $", distance{receivedStruct.distance}, TakeAim: {receivedStruct.TakeAim}, Remaining_bullets: {receivedStruct.Remaining_bullets}" +
-                        $", Magnification{receivedStruct.Magnification}, Fire: {receivedStruct.Fire}");
+                        $", Magnification{receivedStruct.Magnification}, Fire: {receivedStruct.Fire}, Gun Voltage: {receivedStruct.GunVoltage}");
 
                     /* textbox display */
                     tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
                     tb_body_elevation.Text = receivedStruct.BodyTilt.ToString();
 
-                    tb_optical_azimuth.Text=receivedStruct.OpticalPan.ToString();
-                    tb_optical_elevation.Text=receivedStruct.OpticalTilt.ToString();
+                    tb_optical_azimuth.Text = receivedStruct.OpticalPan.ToString();
+                    tb_optical_elevation.Text = receivedStruct.OpticalTilt.ToString();
 
-                    tb_Pointdistance.Text=receivedStruct.pointdistance.ToString();
-                    tb_Distance.Text=receivedStruct.distance.ToString();
+                    tb_Pointdistance.Text = receivedStruct.pointdistance.ToString();
+                    tb_Distance.Text = receivedStruct.distance.ToString();
 
-                    tb_TakeAim.Text=receivedStruct.TakeAim.ToString();
-                    tb_RemainingBullets.Text=receivedStruct.Remaining_bullets.ToString();
-                    
-                    tb_Magnification.Text=receivedStruct.Magnification.ToString();
-                    tb_Fire.Text=receivedStruct.Fire.ToString();
+                    tb_TakeAim.Text = receivedStruct.TakeAim.ToString();
+                    tb_RemainingBullets.Text = receivedStruct.Remaining_bullets.ToString();
+
+                    tb_Magnification.Text = receivedStruct.Magnification.ToString();
+                    tb_Fire.Text = receivedStruct.Fire.ToString();
+                    tb_gunvoltage.Text = receivedStruct.GunVoltage.ToString();
                     /* */
 
                     /* button display */
@@ -322,7 +323,7 @@ namespace RCWS_Situation_room
                     else
                     {
                         btn_Permission.BackColor = Color.Empty;
-                        btn_Permission.Text = "No data. RETRY";
+                        btn_Permission.Text = "No Permission data. RETRY";
                     }
                     /* */
                 }
@@ -363,37 +364,47 @@ namespace RCWS_Situation_room
 
             int centerX = pictureBox_azimuth.Width / 2;
             int centerY = pictureBox_azimuth.Height / 2;
-
+            int lineLength = centerX;
             g.DrawEllipse(Pens.Black, 0, 0, pictureBox_azimuth.Width - 1, pictureBox_azimuth.Height - 1);
 
-            int lineLength = centerX;
-
+            /* Body Pan */
             double radianAngleRCWS = receivedStruct.BodyPan * Math.PI / 180.0;
-
             int endXRCWS = centerX + (int)(lineLength * Math.Sin(radianAngleRCWS));
             int endYRCWS = centerY - (int)(lineLength * Math.Cos(radianAngleRCWS));
-
             g.DrawLine(Pens.Red, new Point(centerX, centerY), new Point(endXRCWS, endYRCWS));
+            /* */
 
+            /* Optical Pan */
             double radianAngleOptical = receivedStruct.OpticalPan * Math.PI / 180.0;
-
             int endXOptical = centerX + (int)(lineLength * Math.Sin(radianAngleOptical));
             int endYOptical = centerY - (int)(lineLength * Math.Cos(radianAngleOptical));
-
             g.DrawLine(Pens.Blue, new Point(centerX, centerY), new Point(endXOptical, endYOptical));
+            /* */
         }
 
         private void pictureBox_elevation_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
 
-            int startX = 0;
+            int startX = pictureBox_elevation.Width / 2;
             int startY = pictureBox_elevation.Height / 2;
+            int lineLength = pictureBox_elevation.Height / 2;
 
-            int lineLength = pictureBox_elevation.Width;
-
+            /* Body Tilt*/
             double radianAngleRCWS = receivedStruct.BodyTilt * Math.PI / 180.0;
+            int endXRCWS = startX + (int)(lineLength * Math.Cos(radianAngleRCWS));
+            int endYRCWS = startY - (int)(lineLength * Math.Sin(radianAngleRCWS));
+            g.DrawLine(Pens.Red, new Point(startX, startY), new Point(endXRCWS, endYRCWS));
+            /* */
 
+            /* Optical Tilt */
+            double radianAngleOptical = receivedStruct.OpticalTilt * Math.PI / 180.0;
+            int endXOptical = startX + (int)(lineLength * Math.Cos(radianAngleOptical));
+            int endYOptical = startY - (int)(lineLength * Math.Sin(radianAngleOptical));
+            g.DrawLine(Pens.Blue, new Point(startX, startY), new Point(endXOptical, endYOptical));
+            /* */
+
+            /* Dispaly text */
             string text = "RCWS 고각: " + receivedStruct.BodyTilt.ToString() + ", Optical 고각: " + receivedStruct.OpticalTilt.ToString();
 
             float x = 10;
@@ -403,18 +414,7 @@ namespace RCWS_Situation_room
             {
                 g.DrawString(text, font, Brushes.Black, x, y);
             }
-
-            int endXRCWS = startX + (int)(lineLength * Math.Cos(radianAngleRCWS));
-            int endYRCWS = startY - (int)(lineLength * Math.Sin(radianAngleRCWS));
-
-            g.DrawLine(Pens.Red, new Point(startX, startY), new Point(endXRCWS, endYRCWS));
-
-            double radianAngleOptical = receivedStruct.OpticalTilt * Math.PI / 180.0;
-
-            int endXOptical = startX + (int)(lineLength * Math.Cos(radianAngleOptical));
-            int endYOptical = startY - (int)(lineLength * Math.Sin(radianAngleOptical));
-
-            g.DrawLine(Pens.Blue, new Point(startX, startY), new Point(endXOptical, endYOptical));
+            /* */
         }
         #endregion
 

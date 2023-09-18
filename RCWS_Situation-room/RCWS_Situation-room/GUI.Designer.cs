@@ -66,6 +66,8 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_disconnect = new System.Windows.Forms.Button();
             this.pictureBox_elevation = new System.Windows.Forms.PictureBox();
+            this.tb_gunvoltage = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
             this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_azimuth)).BeginInit();
@@ -275,6 +277,8 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.groupBox4.Controls.Add(this.tb_gunvoltage);
+            this.groupBox4.Controls.Add(this.label7);
             this.groupBox4.Controls.Add(this.tb_TakeAim);
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.tb_RemainingBullets);
@@ -284,7 +288,7 @@
             this.groupBox4.ForeColor = System.Drawing.Color.White;
             this.groupBox4.Location = new System.Drawing.Point(6, 196);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(118, 161);
+            this.groupBox4.Size = new System.Drawing.Size(118, 255);
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Weapon";
@@ -434,6 +438,22 @@
             this.pictureBox_elevation.TabStop = false;
             this.pictureBox_elevation.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_elevation_Paint);
             // 
+            // tb_gunvoltage
+            // 
+            this.tb_gunvoltage.Location = new System.Drawing.Point(6, 174);
+            this.tb_gunvoltage.Name = "tb_gunvoltage";
+            this.tb_gunvoltage.Size = new System.Drawing.Size(100, 21);
+            this.tb_gunvoltage.TabIndex = 20;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 159);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 12);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "Gun Voltage";
+            // 
             // GUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -522,5 +542,7 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox tb_gunvoltage;
+        private System.Windows.Forms.Label label7;
     }
 }

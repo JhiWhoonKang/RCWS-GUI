@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace RCWS_Situation_room
 {
     public partial class Form1 : Form
     {
+        static Process RCWSCam;
+
         public Form1()
         {
             InitializeComponent();
@@ -55,6 +58,11 @@ namespace RCWS_Situation_room
 
             //else
             //    MessageBox.Show("Invalid User Name or Password");
+
+            RCWSCam = new Process();
+            RCWSCam.StartInfo.FileName = "C:\\JHIWHOON\\RCWS_project\\x64\\Release\\Test_MainServer.exe";
+            RCWSCam.Start();
+
             this.Visible = false;
             GUI gui = new GUI(streamWriter);
             gui.Show();

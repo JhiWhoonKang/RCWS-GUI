@@ -24,6 +24,7 @@ namespace RCWS_Situation_room
             public float OpticalPan;
             public float BodyTilt;
             public float BodyPan;
+            public float GunVoltage;
             public int distance;
             public int pointdistance;
             public byte Permission;
