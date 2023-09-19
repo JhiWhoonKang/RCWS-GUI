@@ -64,6 +64,7 @@ namespace RCWS_Situation_room
             try
             {
                 sg90Port.Open();
+                sg90Port.WriteLine("I");
             }
             catch(Exception ex)
             {
@@ -160,7 +161,6 @@ namespace RCWS_Situation_room
             {
                 if (pressedKeys.Add(e.KeyCode))
                 {
-                    Sendsg90Scope();
                     await SendCommandStructure();
                 }
             }
@@ -226,7 +226,6 @@ namespace RCWS_Situation_room
 
             if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.O)) //배율 축소 C# GUI -> Arduino
             {
-                {
                 try
                 {
                     sg90Port.WriteLine("A");
@@ -243,25 +242,6 @@ namespace RCWS_Situation_room
             await streamWriter.BaseStream.WriteAsync(commandBytes, 0, commandBytes.Length);
             await streamWriter.BaseStream.FlushAsync();
         }
-
-        private void Sendsg90Scope()
-        {
-            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I))
-            {
-                int angle = (scope == 0) ? define.MAX_ANGLE : define.MIN_ANGLE;
-                try
-                {
-                    sg90Port.WriteLine(angle.ToString());
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Cannot send SG90 scope data" + ex.Message);
-                }
-
-                scope = (scope == 0) ? 1 : 0;
-            }
-        }
-
         #endregion
 
         #region TCP Connect
