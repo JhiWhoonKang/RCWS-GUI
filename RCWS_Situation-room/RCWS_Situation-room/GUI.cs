@@ -278,6 +278,12 @@ namespace RCWS_Situation_room
                         $", distance{receivedStruct.distance}, TakeAim: {receivedStruct.TakeAim}, Remaining_bullets: {receivedStruct.Remaining_bullets}" +
                         $", Magnification{receivedStruct.Magnification}, Fire: {receivedStruct.Fire}, Gun Voltage: {receivedStruct.GunVoltage}");
 
+                    /* picturebox display */
+                    pictureBox_azimuth.Invalidate();
+                    //pictureBox_azimuth.Refresh();
+                    pictureBox_elevation.Invalidate();
+                    //pictureBox_elevation.Refresh();
+
                     /* textbox display */
                     tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
                     tb_body_elevation.Text = receivedStruct.BodyTilt.ToString();
@@ -327,10 +333,7 @@ namespace RCWS_Situation_room
 
         private async void btn_connect_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => TcpConnectAsync());
-            RCWSCam = new Process();
-            RCWSCam.StartInfo.FileName = "C:\\JHIWHOON_ws\\2023 Hanium\\My_Server\\obj\\Debug\\My_Server.exe";
-            RCWSCam.Start();
+            await Task.Run(() => TcpConnectAsync());            
         }
 
         private void SendTcp(string str)
@@ -353,8 +356,18 @@ namespace RCWS_Situation_room
 
             int centerX = pictureBox_azimuth.Width / 2;
             int centerY = pictureBox_azimuth.Height / 2;
+            
+            /* */
+            Pen redPen = new Pen(Color.Red, 8);
+            g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
+            g.DrawLine(redPen, new Point(centerX + 10, centerY - 10), new Point(centerX - 10, centerY + 10));
+            redPen.Dispose(); // 리소스 해제
+            /* */
+
+            /* */
             int lineLength = centerX;
             g.DrawEllipse(Pens.Black, 0, 0, pictureBox_azimuth.Width - 1, pictureBox_azimuth.Height - 1);
+            /* */
 
             /* Body Pan */
             double radianAngleRCWS = receivedStruct.BodyPan * Math.PI / 180.0;
@@ -375,35 +388,79 @@ namespace RCWS_Situation_room
         {
             var g = e.Graphics;
 
-            int startX = pictureBox_elevation.Width / 2;
-            int startY = pictureBox_elevation.Height / 2;
+            int centerX = pictureBox_elevation.Width / 2;
+            int centerY = pictureBox_elevation.Height / 2;
+
+            /* */
+            Pen redPen = new Pen(Color.Red, 8);
+            g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
+            g.DrawLine(redPen, new Point(centerX + 10, centerY - 10), new Point(centerX - 10, centerY + 10));
+            redPen.Dispose(); // 리소스 해제
+            /* */
+
+            /* */
             int lineLength = pictureBox_elevation.Height / 2;
+            /* */
 
             /* Body Tilt*/
             double radianAngleRCWS = receivedStruct.BodyTilt * Math.PI / 180.0;
-            int endXRCWS = startX + (int)(lineLength * Math.Cos(radianAngleRCWS));
-            int endYRCWS = startY - (int)(lineLength * Math.Sin(radianAngleRCWS));
-            g.DrawLine(Pens.Red, new Point(startX, startY), new Point(endXRCWS, endYRCWS));
+            int endXRCWS = centerX + (int)(lineLength * Math.Cos(radianAngleRCWS));
+            int endYRCWS = centerY - (int)(lineLength * Math.Sin(radianAngleRCWS));
+            g.DrawLine(Pens.Red, new Point(centerX, centerY), new Point(endXRCWS, endYRCWS));
             /* */
 
             /* Optical Tilt */
             double radianAngleOptical = receivedStruct.OpticalTilt * Math.PI / 180.0;
-            int endXOptical = startX + (int)(lineLength * Math.Cos(radianAngleOptical));
-            int endYOptical = startY - (int)(lineLength * Math.Sin(radianAngleOptical));
-            g.DrawLine(Pens.Blue, new Point(startX, startY), new Point(endXOptical, endYOptical));
+            int endXOptical = centerX + (int)(lineLength * Math.Cos(radianAngleOptical));
+            int endYOptical = centerY - (int)(lineLength * Math.Sin(radianAngleOptical));
+            g.DrawLine(Pens.Blue, new Point(centerX, centerY), new Point(endXOptical, endYOptical));
             /* */
+        }
 
-            /* Dispaly text */
-            string text = "RCWS 고각: " + receivedStruct.BodyTilt.ToString() + ", Optical 고각: " + receivedStruct.OpticalTilt.ToString();
-
-            float x = 10;
-            float y = 10;
-
-            using (Font font = new Font("Arial", 12))
+        private void pictureBox_azimuth_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
             {
-                g.DrawString(text, font, Brushes.Black, x, y);
+                Point clickLocation = e.Location;
+
+                Bitmap bmp;
+                if (pictureBox_azimuth.Image == null) bmp = new Bitmap(pictureBox_azimuth.Width, pictureBox_azimuth.Height);
+                else bmp = new Bitmap(pictureBox_azimuth.Image);
+
+                using (Graphics g = Graphics.FromImage(bmp))
+                using (Pen redPen = new Pen(Color.Red, 8))
+                {
+                    int crossSize = 10;
+
+                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y - crossSize, clickLocation.X + crossSize, clickLocation.Y + crossSize);
+                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
+
+                    pictureBox_azimuth.Image = bmp;
+                }
             }
-            /* */
+        }
+
+        private void pictureBox_elevation_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Point clickLocation = e.Location;
+
+                Bitmap bmp;
+                if (pictureBox_elevation.Image == null) bmp = new Bitmap(pictureBox_elevation.Width, pictureBox_elevation.Height);
+                else bmp = new Bitmap(pictureBox_elevation.Image);
+
+                using (Graphics g = Graphics.FromImage(bmp))
+                using (Pen redPen = new Pen(Color.Red, 8))
+                {
+                    int crossSize = 10;
+
+                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y - crossSize, clickLocation.X + crossSize, clickLocation.Y + crossSize);
+                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
+
+                    pictureBox_elevation.Image = bmp;
+                }
+            }
         }
         #endregion
 

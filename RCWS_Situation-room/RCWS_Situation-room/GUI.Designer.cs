@@ -50,6 +50,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tb_gunvoltage = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tb_TakeAim = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tb_RemainingBullets = new System.Windows.Forms.TextBox();
@@ -66,8 +68,6 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_disconnect = new System.Windows.Forms.Button();
             this.pictureBox_elevation = new System.Windows.Forms.PictureBox();
-            this.tb_gunvoltage = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
             this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_azimuth)).BeginInit();
@@ -140,12 +140,14 @@
             // 
             // pictureBox_azimuth
             // 
+            this.pictureBox_azimuth.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_azimuth.Image")));
             this.pictureBox_azimuth.Location = new System.Drawing.Point(13, 211);
             this.pictureBox_azimuth.Name = "pictureBox_azimuth";
             this.pictureBox_azimuth.Size = new System.Drawing.Size(420, 376);
             this.pictureBox_azimuth.TabIndex = 6;
             this.pictureBox_azimuth.TabStop = false;
             this.pictureBox_azimuth.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_azimuth_Paint);
+            this.pictureBox_azimuth.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_azimuth_MouseDown);
             // 
             // tb_body_azimuth
             // 
@@ -293,6 +295,22 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Weapon";
             // 
+            // tb_gunvoltage
+            // 
+            this.tb_gunvoltage.Location = new System.Drawing.Point(6, 174);
+            this.tb_gunvoltage.Name = "tb_gunvoltage";
+            this.tb_gunvoltage.Size = new System.Drawing.Size(100, 21);
+            this.tb_gunvoltage.TabIndex = 20;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 159);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 12);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "Gun Voltage";
+            // 
             // tb_TakeAim
             // 
             this.tb_TakeAim.Location = new System.Drawing.Point(6, 39);
@@ -431,28 +449,14 @@
             // 
             // pictureBox_elevation
             // 
+            this.pictureBox_elevation.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_elevation.Image")));
             this.pictureBox_elevation.Location = new System.Drawing.Point(439, 211);
             this.pictureBox_elevation.Name = "pictureBox_elevation";
             this.pictureBox_elevation.Size = new System.Drawing.Size(420, 376);
             this.pictureBox_elevation.TabIndex = 19;
             this.pictureBox_elevation.TabStop = false;
             this.pictureBox_elevation.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_elevation_Paint);
-            // 
-            // tb_gunvoltage
-            // 
-            this.tb_gunvoltage.Location = new System.Drawing.Point(6, 174);
-            this.tb_gunvoltage.Name = "tb_gunvoltage";
-            this.tb_gunvoltage.Size = new System.Drawing.Size(100, 21);
-            this.tb_gunvoltage.TabIndex = 20;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 159);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 12);
-            this.label7.TabIndex = 29;
-            this.label7.Text = "Gun Voltage";
+            this.pictureBox_elevation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_elevation_MouseDown);
             // 
             // GUI
             // 
