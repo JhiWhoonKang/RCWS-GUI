@@ -36,19 +36,16 @@ namespace RCWS_Situation_room
         
         StreamWriter streamWriter;
         StreamReader streamReader;
+        private NetworkStream networkStream;
 
         /* SG90 */
         private SerialPort sg90Port;
-        private int scope = 0;
+        Process RCWSCam;
 
-        private NetworkStream networkStream;
-
+        /* Packet */
         Packet.SendTCP command;
         Packet.ReceiveTCP receivedStruct;
 
-        double currentRCWSDirection;
-
-        Process RCWSCam;
 
         public GUI(StreamWriter streamWriter)
         {
