@@ -212,12 +212,24 @@ namespace RCWS_Situation_room
                     command.Permission = 1;
             }
 
-            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I))
+            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I)) //배율 확대 C# GUI -> Arduino
             {
-                int angle = 30;
                 try
                 {
-                    sg90Port.WriteLine(angle.ToString());
+                    sg90Port.WriteLine("I");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot send SG90 scope data" + ex.Message);
+                }
+            }
+
+            if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.O)) //배율 축소 C# GUI -> Arduino
+            {
+                {
+                try
+                {
+                    sg90Port.WriteLine("A");
                 }
                 catch (Exception ex)
                 {
