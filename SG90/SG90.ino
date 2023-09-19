@@ -3,8 +3,8 @@
 Servo SG90_F;
 Servo SG90_M;
 
-int pos1 = 0;
-int pos2 = 0;
+int pos1 = 50;
+int pos2 = 50;
 
 void setup() {
   SG90_F.attach(9);
