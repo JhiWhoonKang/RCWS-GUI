@@ -51,12 +51,12 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btn_fire = new System.Windows.Forms.Button();
+            this.btn_takeaim = new System.Windows.Forms.Button();
             this.tb_gunvoltage = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.tb_TakeAim = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tb_RemainingBullets = new System.Windows.Forms.TextBox();
-            this.tb_Fire = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -68,7 +68,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_disconnect = new System.Windows.Forms.Button();
-            this.pictureBox_elevation = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.suspectedEnemyActivityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enemyMovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +82,6 @@
             this.groupBox4.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_elevation)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -149,7 +147,7 @@
             this.pictureBox_azimuth.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_azimuth.Image")));
             this.pictureBox_azimuth.Location = new System.Drawing.Point(13, 211);
             this.pictureBox_azimuth.Name = "pictureBox_azimuth";
-            this.pictureBox_azimuth.Size = new System.Drawing.Size(420, 376);
+            this.pictureBox_azimuth.Size = new System.Drawing.Size(846, 376);
             this.pictureBox_azimuth.TabIndex = 6;
             this.pictureBox_azimuth.TabStop = false;
             this.pictureBox_azimuth.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_azimuth_Paint);
@@ -285,12 +283,12 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.groupBox4.Controls.Add(this.btn_fire);
+            this.groupBox4.Controls.Add(this.btn_takeaim);
             this.groupBox4.Controls.Add(this.tb_gunvoltage);
             this.groupBox4.Controls.Add(this.label7);
-            this.groupBox4.Controls.Add(this.tb_TakeAim);
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.tb_RemainingBullets);
-            this.groupBox4.Controls.Add(this.tb_Fire);
             this.groupBox4.Controls.Add(this.label11);
             this.groupBox4.Controls.Add(this.label13);
             this.groupBox4.ForeColor = System.Drawing.Color.White;
@@ -300,6 +298,24 @@
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Weapon";
+            // 
+            // btn_fire
+            // 
+            this.btn_fire.Location = new System.Drawing.Point(6, 82);
+            this.btn_fire.Name = "btn_fire";
+            this.btn_fire.Size = new System.Drawing.Size(105, 23);
+            this.btn_fire.TabIndex = 31;
+            this.btn_fire.Text = "Fire";
+            this.btn_fire.UseVisualStyleBackColor = true;
+            // 
+            // btn_takeaim
+            // 
+            this.btn_takeaim.Location = new System.Drawing.Point(6, 39);
+            this.btn_takeaim.Name = "btn_takeaim";
+            this.btn_takeaim.Size = new System.Drawing.Size(105, 23);
+            this.btn_takeaim.TabIndex = 30;
+            this.btn_takeaim.Text = "Take Aim";
+            this.btn_takeaim.UseVisualStyleBackColor = true;
             // 
             // tb_gunvoltage
             // 
@@ -317,13 +333,6 @@
             this.label7.TabIndex = 29;
             this.label7.Text = "Gun Voltage";
             // 
-            // tb_TakeAim
-            // 
-            this.tb_TakeAim.Location = new System.Drawing.Point(6, 39);
-            this.tb_TakeAim.Name = "tb_TakeAim";
-            this.tb_TakeAim.Size = new System.Drawing.Size(105, 21);
-            this.tb_TakeAim.TabIndex = 28;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -339,13 +348,6 @@
             this.tb_RemainingBullets.Name = "tb_RemainingBullets";
             this.tb_RemainingBullets.Size = new System.Drawing.Size(105, 21);
             this.tb_RemainingBullets.TabIndex = 24;
-            // 
-            // tb_Fire
-            // 
-            this.tb_Fire.Location = new System.Drawing.Point(7, 82);
-            this.tb_Fire.Name = "tb_Fire";
-            this.tb_Fire.Size = new System.Drawing.Size(104, 21);
-            this.tb_Fire.TabIndex = 23;
             // 
             // label11
             // 
@@ -453,17 +455,6 @@
             this.btn_disconnect.UseVisualStyleBackColor = true;
             this.btn_disconnect.Click += new System.EventHandler(this.btn_disconnect_Click);
             // 
-            // pictureBox_elevation
-            // 
-            this.pictureBox_elevation.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_elevation.Image")));
-            this.pictureBox_elevation.Location = new System.Drawing.Point(439, 211);
-            this.pictureBox_elevation.Name = "pictureBox_elevation";
-            this.pictureBox_elevation.Size = new System.Drawing.Size(420, 376);
-            this.pictureBox_elevation.TabIndex = 19;
-            this.pictureBox_elevation.TabStop = false;
-            this.pictureBox_elevation.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_elevation_Paint);
-            this.pictureBox_elevation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_elevation_MouseDown);
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -495,7 +486,6 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1558, 782);
-            this.Controls.Add(this.pictureBox_elevation);
             this.Controls.Add(this.btn_disconnect);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox7);
@@ -528,7 +518,6 @@
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_elevation)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -548,7 +537,6 @@
         private System.Windows.Forms.RichTextBox rtb_receivetcp;
 
         private System.Windows.Forms.PictureBox pictureBox_azimuth;
-        private System.Windows.Forms.PictureBox pictureBox_elevation;
         private System.Windows.Forms.PictureBox pictureBox_Map;
 
         private System.Windows.Forms.TextBox tb_body_azimuth;
@@ -558,8 +546,6 @@
         private System.Windows.Forms.TextBox tb_Distance;
         private System.Windows.Forms.TextBox tb_Pointdistance;
         private System.Windows.Forms.TextBox tb_Magnification;
-        private System.Windows.Forms.TextBox tb_TakeAim;
-        private System.Windows.Forms.TextBox tb_Fire;
         private System.Windows.Forms.TextBox tb_RemainingBullets;
 
         private System.Windows.Forms.Label label1;
@@ -586,5 +572,7 @@
         private System.Windows.Forms.ToolStripMenuItem suspectedEnemyActivityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem enemyMovementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem enemyConcentrationToolStripMenuItem;
+        private System.Windows.Forms.Button btn_fire;
+        private System.Windows.Forms.Button btn_takeaim;
     }
 }

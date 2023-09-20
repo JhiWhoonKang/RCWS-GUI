@@ -20,20 +20,20 @@ using System.Net.NetworkInformation;
 using System.Windows.Forms.Design;
 
 namespace RCWS_Situation_room
-{ 
+{
     public partial class GUI : Form
     {
         /*map*/
         private Bitmap mapImage;
         private float currentScale = 1.0f;
         private float zoomFactor = 1.1f;
-        private bool isDragging = false;    
+        private bool isDragging = false;
         private int lastX;
         private int lastY;
 
         /*motion control*/
         private HashSet<Keys> pressedKeys = new HashSet<Keys>();
-        
+
         StreamWriter streamWriter;
         StreamReader streamReader;
         private NetworkStream networkStream;
@@ -51,19 +51,20 @@ namespace RCWS_Situation_room
         {
             InitializeComponent();
 
-            mapImage = new Bitmap(@"C:\JHIWHOON_ws\2023 Hanium\_file photo\demomap.bmp");
+            //mapImage = new Bitmap(@"C:\Users\kangj\Downloads\RCWS-GUI-main\RCWS-GUI-main\RCWS_Situation-room\RCWS_Situation-room\demomap.bmp"); //notebook
+            mapImage = new Bitmap(@"C:\JHIWHOON_ws\2023 Hanium\_file photo\demomap.bmp"); //desktop
             UpdateMapImage();
 
             command = new Packet.SendTCP();
             receivedStruct = new Packet.ReceiveTCP();
 
-            sg90Port = new SerialPort("COM6",9600);
+            sg90Port = new SerialPort("COM6", 9600);
             try
             {
                 sg90Port.Open();
                 sg90Port.WriteLine("I");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Cannot open SG90 Serial Port" + ex.Message);
             }
@@ -188,7 +189,10 @@ namespace RCWS_Situation_room
         {
             command.BodyPan = 0;
             command.BodyTilt = 0;
+            command.Fire = 0;
+            command.TakeAim = 0;
 
+            /* motion data */
             if (pressedKeys.Contains(Keys.A))
                 command.BodyPan = 1;
 
@@ -200,6 +204,14 @@ namespace RCWS_Situation_room
 
             if (pressedKeys.Contains(Keys.S))
                 command.BodyTilt = -1;
+            /* */
+
+            /* weapon data */
+            if (pressedKeys.Contains(Keys.F))
+                command.Fire = 1;
+
+            if (pressedKeys.Contains(Keys.T))
+                command.TakeAim = 1;
 
             if (pressedKeys.Contains(Keys.C))
             {
@@ -208,7 +220,9 @@ namespace RCWS_Situation_room
                 else
                     command.Permission = 1;
             }
+            /* */
 
+            /* optical data */
             if (pressedKeys.Contains(Keys.Z) && pressedKeys.Contains(Keys.I)) //배율 확대 C# GUI -> Arduino
             {
                 try
@@ -232,13 +246,16 @@ namespace RCWS_Situation_room
                     MessageBox.Show("Cannot send SG90 scope data" + ex.Message);
                 }
             }
+            /* */
 
+            /* 이외 키 무효화 */
             else
             {
-                MessageBox.Show("Unsupported key pressed");
+
             }
-                
-            SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}\n");
+            /* */
+
+            SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}, TakeAim: {command.TakeAim}, Fire: {command.Fire}\n");
 
             byte[] commandBytes = TcpReturn.StructToBytes(command);
             await streamWriter.BaseStream.WriteAsync(commandBytes, 0, commandBytes.Length);
@@ -286,29 +303,26 @@ namespace RCWS_Situation_room
                     /* picturebox display */
                     pictureBox_azimuth.Invalidate();
                     //pictureBox_azimuth.Refresh();
-                    pictureBox_elevation.Invalidate();
-                    //pictureBox_elevation.Refresh();
                     /* */
 
                     /* textbox display */
                     tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
                     tb_body_elevation.Text = receivedStruct.BodyTilt.ToString();
-
                     tb_optical_azimuth.Text = receivedStruct.OpticalPan.ToString();
                     tb_optical_elevation.Text = receivedStruct.OpticalTilt.ToString();
 
+                    tb_Magnification.Text = receivedStruct.Magnification.ToString();
                     tb_Pointdistance.Text = receivedStruct.pointdistance.ToString();
                     tb_Distance.Text = receivedStruct.distance.ToString();
 
-                    tb_TakeAim.Text = receivedStruct.TakeAim.ToString();
+                    btn_takeaim.Text = receivedStruct.TakeAim.ToString();
+                    btn_fire.Text = receivedStruct.Fire.ToString();
                     tb_RemainingBullets.Text = receivedStruct.Remaining_bullets.ToString();
 
-                    tb_Magnification.Text = receivedStruct.Magnification.ToString();
-                    tb_Fire.Text = receivedStruct.Fire.ToString();
                     tb_gunvoltage.Text = receivedStruct.GunVoltage.ToString();
                     /* */
 
-                    /* button display */
+                    /* Permission button display */
                     if (receivedStruct.Permission == 0 || receivedStruct.Permission == 2)
                     {
                         btn_Permission.BackColor = Color.Green;
@@ -362,7 +376,7 @@ namespace RCWS_Situation_room
 
             int centerX = pictureBox_azimuth.Width / 2;
             int centerY = pictureBox_azimuth.Height / 2;
-            
+
             /* */
             Pen redPen = new Pen(Color.Red, 8);
             g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
@@ -390,39 +404,6 @@ namespace RCWS_Situation_room
             /* */
         }
 
-        private void pictureBox_elevation_Paint(object sender, PaintEventArgs e)
-        {
-            var g = e.Graphics;
-
-            int centerX = pictureBox_elevation.Width / 2;
-            int centerY = pictureBox_elevation.Height / 2;
-
-            /* */
-            Pen redPen = new Pen(Color.Red, 8);
-            g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
-            g.DrawLine(redPen, new Point(centerX + 10, centerY - 10), new Point(centerX - 10, centerY + 10));
-            redPen.Dispose();
-            /* */
-
-            /* */
-            int lineLength = pictureBox_elevation.Height / 2;
-            /* */
-
-            /* Body Tilt*/
-            double radianAngleRCWS = receivedStruct.BodyTilt * Math.PI / 180.0;
-            int endXRCWS = centerX + (int)(lineLength * Math.Cos(radianAngleRCWS));
-            int endYRCWS = centerY - (int)(lineLength * Math.Sin(radianAngleRCWS));
-            g.DrawLine(Pens.Red, new Point(centerX, centerY), new Point(endXRCWS, endYRCWS));
-            /* */
-
-            /* Optical Tilt */
-            double radianAngleOptical = receivedStruct.OpticalTilt * Math.PI / 180.0;
-            int endXOptical = centerX + (int)(lineLength * Math.Cos(radianAngleOptical));
-            int endYOptical = centerY - (int)(lineLength * Math.Sin(radianAngleOptical));
-            g.DrawLine(Pens.Blue, new Point(centerX, centerY), new Point(endXOptical, endYOptical));
-            /* */
-        }
-
         private void pictureBox_azimuth_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -443,29 +424,6 @@ namespace RCWS_Situation_room
                     g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
 
                     pictureBox_azimuth.Image = bmp;
-                }
-            }
-        }
-
-        private void pictureBox_elevation_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                Point clickLocation = e.Location;
-
-                Bitmap bmp;
-                if (pictureBox_elevation.Image == null) bmp = new Bitmap(pictureBox_elevation.Width, pictureBox_elevation.Height);
-                else bmp = new Bitmap(pictureBox_elevation.Image);
-
-                using (Graphics g = Graphics.FromImage(bmp))
-                using (Pen redPen = new Pen(Color.Red, 8))
-                {
-                    int crossSize = 10;
-                    
-                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y - crossSize, clickLocation.X + crossSize, clickLocation.Y + crossSize);
-                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
-
-                    pictureBox_elevation.Image = bmp;
                 }
             }
         }
@@ -491,6 +449,6 @@ namespace RCWS_Situation_room
                 sg90Port.Close();
             }
             RCWSCam.Kill();
-        }        
+        }
     }
 }
