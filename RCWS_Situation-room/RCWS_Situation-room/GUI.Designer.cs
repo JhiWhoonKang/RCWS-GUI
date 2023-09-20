@@ -147,7 +147,7 @@
             this.pictureBox_azimuth.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_azimuth.Image")));
             this.pictureBox_azimuth.Location = new System.Drawing.Point(13, 211);
             this.pictureBox_azimuth.Name = "pictureBox_azimuth";
-            this.pictureBox_azimuth.Size = new System.Drawing.Size(846, 376);
+            this.pictureBox_azimuth.Size = new System.Drawing.Size(840, 376);
             this.pictureBox_azimuth.TabIndex = 6;
             this.pictureBox_azimuth.TabStop = false;
             this.pictureBox_azimuth.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_azimuth_Paint);
