@@ -213,7 +213,7 @@ namespace RCWS_Situation_room
             {
                 try
                 {
-                    sg90Port.WriteLine("I");
+                    sg90Port.WriteLine("A");
                 }
                 catch (Exception ex)
                 {
@@ -225,7 +225,7 @@ namespace RCWS_Situation_room
             {
                 try
                 {
-                    sg90Port.WriteLine("A");
+                    sg90Port.WriteLine("I");
                 }
                 catch (Exception ex)
                 {
@@ -233,6 +233,11 @@ namespace RCWS_Situation_room
                 }
             }
 
+            else
+            {
+                MessageBox.Show("Unsupported key pressed");
+            }
+                
             SendTcp($"Pan: {command.BodyPan}, Tilt: {command.BodyTilt}, Permission: {command.Permission}\n");
 
             byte[] commandBytes = TcpReturn.StructToBytes(command);
@@ -283,6 +288,7 @@ namespace RCWS_Situation_room
                     //pictureBox_azimuth.Refresh();
                     pictureBox_elevation.Invalidate();
                     //pictureBox_elevation.Refresh();
+                    /* */
 
                     /* textbox display */
                     tb_body_azimuth.Text = receivedStruct.BodyPan.ToString();
@@ -333,7 +339,7 @@ namespace RCWS_Situation_room
 
         private async void btn_connect_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => TcpConnectAsync());            
+            await Task.Run(() => TcpConnectAsync());
         }
 
         private void SendTcp(string str)
@@ -361,7 +367,7 @@ namespace RCWS_Situation_room
             Pen redPen = new Pen(Color.Red, 8);
             g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
             g.DrawLine(redPen, new Point(centerX + 10, centerY - 10), new Point(centerX - 10, centerY + 10));
-            redPen.Dispose(); // 리소스 해제
+            redPen.Dispose();
             /* */
 
             /* */
@@ -395,7 +401,7 @@ namespace RCWS_Situation_room
             Pen redPen = new Pen(Color.Red, 8);
             g.DrawLine(redPen, new Point(centerX - 10, centerY - 10), new Point(centerX + 10, centerY + 10));
             g.DrawLine(redPen, new Point(centerX + 10, centerY - 10), new Point(centerX - 10, centerY + 10));
-            redPen.Dispose(); // 리소스 해제
+            redPen.Dispose();
             /* */
 
             /* */
@@ -422,6 +428,7 @@ namespace RCWS_Situation_room
             if (e.Button == MouseButtons.Right)
             {
                 Point clickLocation = e.Location;
+                contextMenuStrip1.Show(pictureBox_azimuth, clickLocation);
 
                 Bitmap bmp;
                 if (pictureBox_azimuth.Image == null) bmp = new Bitmap(pictureBox_azimuth.Width, pictureBox_azimuth.Height);
@@ -454,7 +461,7 @@ namespace RCWS_Situation_room
                 using (Pen redPen = new Pen(Color.Red, 8))
                 {
                     int crossSize = 10;
-
+                    
                     g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y - crossSize, clickLocation.X + crossSize, clickLocation.Y + crossSize);
                     g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
 
@@ -484,6 +491,6 @@ namespace RCWS_Situation_room
                 sg90Port.Close();
             }
             RCWSCam.Kill();
-        }
+        }        
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUI));
             this.pictureBox_Map = new System.Windows.Forms.PictureBox();
             this.btn_close = new System.Windows.Forms.Button();
@@ -68,6 +69,10 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btn_disconnect = new System.Windows.Forms.Button();
             this.pictureBox_elevation = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.suspectedEnemyActivityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.enemyMovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.enemyConcentrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
             this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_azimuth)).BeginInit();
@@ -79,6 +84,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_elevation)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox_Map
@@ -299,7 +305,7 @@
             // 
             this.tb_gunvoltage.Location = new System.Drawing.Point(6, 174);
             this.tb_gunvoltage.Name = "tb_gunvoltage";
-            this.tb_gunvoltage.Size = new System.Drawing.Size(100, 21);
+            this.tb_gunvoltage.Size = new System.Drawing.Size(105, 21);
             this.tb_gunvoltage.TabIndex = 20;
             // 
             // label7
@@ -331,14 +337,14 @@
             // 
             this.tb_RemainingBullets.Location = new System.Drawing.Point(6, 126);
             this.tb_RemainingBullets.Name = "tb_RemainingBullets";
-            this.tb_RemainingBullets.Size = new System.Drawing.Size(103, 21);
+            this.tb_RemainingBullets.Size = new System.Drawing.Size(105, 21);
             this.tb_RemainingBullets.TabIndex = 24;
             // 
             // tb_Fire
             // 
             this.tb_Fire.Location = new System.Drawing.Point(7, 82);
             this.tb_Fire.Name = "tb_Fire";
-            this.tb_Fire.Size = new System.Drawing.Size(105, 21);
+            this.tb_Fire.Size = new System.Drawing.Size(104, 21);
             this.tb_Fire.TabIndex = 23;
             // 
             // label11
@@ -458,6 +464,33 @@
             this.pictureBox_elevation.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox_elevation_Paint);
             this.pictureBox_elevation.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_elevation_MouseDown);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.suspectedEnemyActivityToolStripMenuItem,
+            this.enemyMovementToolStripMenuItem,
+            this.enemyConcentrationToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(214, 70);
+            // 
+            // suspectedEnemyActivityToolStripMenuItem
+            // 
+            this.suspectedEnemyActivityToolStripMenuItem.Name = "suspectedEnemyActivityToolStripMenuItem";
+            this.suspectedEnemyActivityToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.suspectedEnemyActivityToolStripMenuItem.Text = "Suspected Enemy Activity";
+            // 
+            // enemyMovementToolStripMenuItem
+            // 
+            this.enemyMovementToolStripMenuItem.Name = "enemyMovementToolStripMenuItem";
+            this.enemyMovementToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.enemyMovementToolStripMenuItem.Text = "Enemy Movement";
+            // 
+            // enemyConcentrationToolStripMenuItem
+            // 
+            this.enemyConcentrationToolStripMenuItem.Name = "enemyConcentrationToolStripMenuItem";
+            this.enemyConcentrationToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.enemyConcentrationToolStripMenuItem.Text = "Enemy Concentration";
+            // 
             // GUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -496,6 +529,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_elevation)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -548,5 +582,9 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox tb_gunvoltage;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem suspectedEnemyActivityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem enemyMovementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem enemyConcentrationToolStripMenuItem;
     }
 }
