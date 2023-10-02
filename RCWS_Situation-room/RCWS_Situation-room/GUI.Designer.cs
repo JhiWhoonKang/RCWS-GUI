@@ -72,6 +72,7 @@
             this.suspectedEnemyActivityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enemyMovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enemyConcentrationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox_ImageTest = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Map)).BeginInit();
             this.pn_mapcontainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_azimuth)).BeginInit();
@@ -83,6 +84,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_ImageTest)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox_Map
@@ -462,7 +464,7 @@
             this.enemyMovementToolStripMenuItem,
             this.enemyConcentrationToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(214, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(214, 70);
             // 
             // suspectedEnemyActivityToolStripMenuItem
             // 
@@ -485,10 +487,19 @@
             this.enemyConcentrationToolStripMenuItem.Text = "Enemy Concentration";
             this.enemyConcentrationToolStripMenuItem.Click += new System.EventHandler(this.enemyConcentrationToolStripMenuItem_Click);
             // 
+            // pictureBox_ImageTest
+            // 
+            this.pictureBox_ImageTest.Location = new System.Drawing.Point(422, 13);
+            this.pictureBox_ImageTest.Name = "pictureBox_ImageTest";
+            this.pictureBox_ImageTest.Size = new System.Drawing.Size(1077, 67);
+            this.pictureBox_ImageTest.TabIndex = 19;
+            this.pictureBox_ImageTest.TabStop = false;
+            // 
             // GUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1558, 782);
+            this.Controls.Add(this.pictureBox_ImageTest);
             this.Controls.Add(this.btn_disconnect);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox7);
@@ -522,6 +533,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_ImageTest)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -577,5 +589,6 @@
         private System.Windows.Forms.ToolStripMenuItem enemyConcentrationToolStripMenuItem;
         private System.Windows.Forms.Button btn_fire;
         private System.Windows.Forms.Button btn_takeaim;
+        private System.Windows.Forms.PictureBox pictureBox_ImageTest;
     }
 }

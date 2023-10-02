@@ -28,7 +28,7 @@ def video_stream(sock, addr):
 
 def main():
    sock= socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-   addr= ("127.0.0.1", 12345) # IP and port of receiver
+   addr= ("127.0.0.1", 9000) # IP and port of receiver
    
    thread= Thread(target=video_stream,args=(sock,addr))
    thread.start()

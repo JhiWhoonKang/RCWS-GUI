@@ -46,6 +46,7 @@ namespace RCWS_Situation_room
         Packet.SendTCP command;
         Packet.ReceiveTCP receivedStruct;
 
+        private Thread receiveThread;
 
         public GUI(StreamWriter streamWriter)
         {
@@ -80,6 +81,33 @@ namespace RCWS_Situation_room
             KeyDown += new KeyEventHandler(GUI_KeyDown);
             KeyUp += new KeyEventHandler(GUI_KeyUp);
             this.Focus();
+
+            // 영상 테스트
+            receiveThread = new Thread(new ThreadStart(ReceiveVideoFrameThread));
+            receiveThread.Start();
+        }
+
+        private void ReceiveVideoFrameThread()
+        {
+            UdpClient client = new UdpClient(9001);
+
+            while (true)
+            {
+                IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+                // Receive the length of byte array first
+                byte[] lengthBytes = client.Receive(ref ipEndPoint);
+                int lengthOfByteArray = BitConverter.ToInt32(lengthBytes, 0);
+
+                // Receive the image data 
+                byte[] receivedBytes = client.Receive(ref ipEndPoint);
+
+                MemoryStream ms = new MemoryStream(receivedBytes);
+
+                Image returnImage = Image.FromStream(ms);
+
+                this.Invoke((MethodInvoker)(() => pictureBox_ImageTest.Image = returnImage));
+            }
         }
 
         #region Map
