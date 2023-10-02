@@ -462,25 +462,28 @@
             this.enemyMovementToolStripMenuItem,
             this.enemyConcentrationToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(214, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(214, 92);
             // 
             // suspectedEnemyActivityToolStripMenuItem
             // 
             this.suspectedEnemyActivityToolStripMenuItem.Name = "suspectedEnemyActivityToolStripMenuItem";
             this.suspectedEnemyActivityToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.suspectedEnemyActivityToolStripMenuItem.Text = "Suspected Enemy Activity";
+            this.suspectedEnemyActivityToolStripMenuItem.Click += new System.EventHandler(this.suspectedEnemyActivityToolStripMenuItem_Click);
             // 
             // enemyMovementToolStripMenuItem
             // 
             this.enemyMovementToolStripMenuItem.Name = "enemyMovementToolStripMenuItem";
             this.enemyMovementToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.enemyMovementToolStripMenuItem.Text = "Enemy Movement";
+            this.enemyMovementToolStripMenuItem.Click += new System.EventHandler(this.enemyMovementToolStripMenuItem_Click);
             // 
             // enemyConcentrationToolStripMenuItem
             // 
             this.enemyConcentrationToolStripMenuItem.Name = "enemyConcentrationToolStripMenuItem";
             this.enemyConcentrationToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.enemyConcentrationToolStripMenuItem.Text = "Enemy Concentration";
+            this.enemyConcentrationToolStripMenuItem.Click += new System.EventHandler(this.enemyConcentrationToolStripMenuItem_Click);
             // 
             // GUI
             // 

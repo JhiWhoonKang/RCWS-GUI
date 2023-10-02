@@ -315,11 +315,48 @@ namespace RCWS_Situation_room
                     tb_Pointdistance.Text = receivedStruct.pointdistance.ToString();
                     tb_Distance.Text = receivedStruct.distance.ToString();
 
-                    btn_takeaim.Text = receivedStruct.TakeAim.ToString();
-                    btn_fire.Text = receivedStruct.Fire.ToString();
                     tb_RemainingBullets.Text = receivedStruct.Remaining_bullets.ToString();
-
                     tb_gunvoltage.Text = receivedStruct.GunVoltage.ToString();
+                    /* */
+
+                    /* Take Aim button display */
+                    if (receivedStruct.TakeAim== 0 || receivedStruct.TakeAim == 2)
+                    {
+                        btn_takeaim.BackColor = Color.Green;
+                        btn_takeaim.Text = "Controlable";
+                    }
+
+                    else if (receivedStruct.TakeAim == 1)
+                    {
+                        btn_takeaim.BackColor = Color.Red;
+                        btn_takeaim.Text = "Uncontrolable";
+                    }
+
+                    else
+                    {
+                        btn_takeaim.BackColor = Color.Empty;
+                        btn_takeaim.Text = "No Aim data. RETRY";
+                    }
+                    /* */
+
+                    /* Fire button display */
+                    if (receivedStruct.Fire == 0 || receivedStruct.Fire == 2)
+                    {
+                        btn_fire.BackColor = Color.Green;
+                        btn_fire.Text = "Controlable";
+                    }
+
+                    else if (receivedStruct.Fire == 1)
+                    {
+                        btn_fire.BackColor = Color.Red;
+                        btn_fire.Text = "Uncontrolable";
+                    }
+
+                    else
+                    {
+                        btn_fire.BackColor = Color.Empty;
+                        btn_fire.Text = "No Fire data. RETRY";
+                    }
                     /* */
 
                     /* Permission button display */
@@ -404,26 +441,62 @@ namespace RCWS_Situation_room
             /* */
         }
 
+        Point clickLocation;
         private void pictureBox_azimuth_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                Point clickLocation = e.Location;
+                clickLocation = e.Location;
                 contextMenuStrip1.Show(pictureBox_azimuth, clickLocation);
 
                 Bitmap bmp;
                 if (pictureBox_azimuth.Image == null) bmp = new Bitmap(pictureBox_azimuth.Width, pictureBox_azimuth.Height);
                 else bmp = new Bitmap(pictureBox_azimuth.Image);
 
-                using (Graphics g = Graphics.FromImage(bmp))
-                using (Pen redPen = new Pen(Color.Red, 8))
+                pictureBox_azimuth.Image = bmp;
+            }
+        }
+
+        private void suspectedEnemyActivityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string imagePath = "이미지 파일 경로";
+
+            if (File.Exists(imagePath)) DrawImage(imagePath);
+            else MessageBox.Show("Cannot draw Image: ");
+        }
+
+        private void enemyMovementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string imagePath = "이미지 파일 경로";
+
+            if (File.Exists(imagePath)) DrawImage(imagePath);
+            else MessageBox.Show("Cannot draw Image: ");
+        }
+
+        private void enemyConcentrationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string imagePath = "이미지 파일 경로";
+
+            if (File.Exists(imagePath)) DrawImage(imagePath);
+            else MessageBox.Show("Cannot draw Image: ");
+        }
+
+        void DrawImage(string path)
+        {
+            using (Graphics g = Graphics.FromImage(pictureBox_azimuth.Image))
+            {
+                try
                 {
-                    int crossSize = 10;
-
-                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y - crossSize, clickLocation.X + crossSize, clickLocation.Y + crossSize);
-                    g.DrawLine(redPen, clickLocation.X - crossSize, clickLocation.Y + crossSize, clickLocation.X + crossSize, clickLocation.Y - crossSize);
-
-                    pictureBox_azimuth.Image = bmp;
+                    using (Image image = Image.FromFile(path))
+                    {
+                        Point clickLocation = new Point(pictureBox_azimuth.Width / 2, pictureBox_azimuth.Height / 2);
+                        g.DrawImage(image, clickLocation.X - image.Width / 2, clickLocation.Y - image.Height / 2);
+                        pictureBox_azimuth.Refresh();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Cannot draw Image: " + ex.Message);
                 }
             }
         }
@@ -433,10 +506,7 @@ namespace RCWS_Situation_room
         {
             Close();
             Application.Exit();
-            if (sg90Port.IsOpen)
-            {
-                sg90Port.Close();
-            }
+            if (sg90Port.IsOpen) sg90Port.Close();
             RCWSCam.Kill();
         }
 
@@ -444,10 +514,7 @@ namespace RCWS_Situation_room
         {
             Close();
             Application.Exit();
-            if (sg90Port.IsOpen)
-            {
-                sg90Port.Close();
-            }
+            if (sg90Port.IsOpen) sg90Port.Close();
             RCWSCam.Kill();
         }
     }
